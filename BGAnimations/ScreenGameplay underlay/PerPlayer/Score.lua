@@ -24,6 +24,10 @@ return Def.BitmapText{
 				self:x( _screen.cx + _screen.w/2.75 )
 			end
 		end
+
+		if SL[ToEnumShortString(player)].ActiveModifiers.DensityGraph ~= "Disabled" then
+			self:visible(false)
+		end
 	end,
 	JudgmentMessageCommand=function(self) self:queuecommand("RedrawScore") end,
 	RedrawScoreCommand=function(self)

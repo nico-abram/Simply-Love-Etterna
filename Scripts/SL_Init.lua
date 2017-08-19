@@ -25,6 +25,7 @@ local PlayerDefaults = {
 				TargetScore=false,
 				ReceptorArrowsPosition="StomperZ",
 				LifeMeterType="Standard",
+				DensityGraph="Disabled"
 			}
 			self.Streams = {
 				SongDir = nil,
