@@ -11,11 +11,31 @@ local af = Def.ActorFrame{
 	LoadFont("_miso")..{
 		InitCommand=cmd(xy,_screen.cx,54; maxwidth, 294 ),
 		OnCommand=function(self)
-			local songtitle = (GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse():GetDisplayFullTitle()) or GAMESTATE:GetCurrentSong():GetDisplayFullTitle()
+			local songBPMString = ""
+			local bpms
+			local songtitle = ""
+			
+			if GAMESTATE:IsCourseMode() then
+				songtitle = GAMESTATE:GetCurrentCourse():GetDisplayFullTitle()
+			else
+				bpms = GAMESTATE:GetCurrentSong():GetDisplayBpms()
+				if bpms[1] <= 0 or bpms[2] <= 0 then
+					bpms = GAMESTATE:GetCurrentSong():GetTimingData():GetActualBPM()
+				end
+				
+				bpms[1] = ("%0.0f"):format(bpms[1])
+				bpms[2] = ("%0.0f"):format(bpms[2])
 
-			if songtitle then
-				self:settext(songtitle)
+				if bpms[1] == bpms[2] then
+					songBPMString = " - BPM: " .. bpms[1]
+				else
+					songBPMString = " - BPM: " .. bpms[1] ..  " - " .. bpms[2]
+				end
+				
+				songtitle = GAMESTATE:GetCurrentSong():GetDisplayFullTitle() .. songBPMString
 			end
+
+			self:settext(songtitle)
 		end
 	}
 }
