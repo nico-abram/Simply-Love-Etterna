@@ -1,6 +1,23 @@
 local player = ...
 local pn = ToEnumShortString(player)
 local p = PlayerNumber:Reverse()[player]
+local showStreams = false
+
+local function getInputHandler(actor)
+	return (function (event)
+		if event.GameButton == "Select" and event.PlayerNumber == player then
+			if event.type == "InputEventType_FirstPress" then
+				showStreams = true
+				actor:queuecommand("StepsHaveChanged")
+			elseif event.type == "InputEventType_Release" then
+				showStreams = false
+				actor:queuecommand("StepsHaveChanged")
+			end
+		end
+
+		return false
+	end)
+end
 
 return Def.ActorFrame{
 	Name="StepArtistAF_" .. pn,
@@ -43,6 +60,12 @@ return Def.ActorFrame{
 		if GAMESTATE:IsHumanPlayer(player) then
 			self:queuecommand("Appear" .. pn)
 		end
+
+		self:queuecommand("Capture")
+	end,
+
+	CaptureCommand=function(self)
+		SCREENMAN:GetTopScreen():AddInputCallback(getInputHandler(self))
 	end,
 
 	-- colored background quad
@@ -72,7 +95,22 @@ return Def.ActorFrame{
 		Font="_miso",
 		InitCommand=cmd(diffuse,color("#1e282f"); horizalign, left; x, 75; maxwidth, 115),
 		StepsHaveChangedCommand=function(self)
-
+			if showStreams and not GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentSong() then
+				local song_dir = GAMESTATE:GetCurrentSong():GetSongDir()
+				local steps = GAMESTATE:GetCurrentSteps(player)
+				local steps_type = ToEnumShortString( steps:GetStepsType() ):gsub("_", "-"):lower()
+				local difficulty = ToEnumShortString( steps:GetDifficulty() )
+				local breakdown = GetStreamBreakdown(song_dir, steps_type, difficulty)
+				
+				if breakdown == "" then
+					self:settext("no streams!")
+				else
+					self:settext(breakdown)
+				end
+				
+				return true
+			end
+			
 			local SongOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSong()
 			local StepsOrCourse = GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentCourse() or GAMESTATE:GetCurrentSteps(player)
 
