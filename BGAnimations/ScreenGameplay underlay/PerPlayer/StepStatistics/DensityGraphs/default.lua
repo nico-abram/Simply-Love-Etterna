@@ -178,7 +178,7 @@ if HasData() then
 	}
 
 	local gradient = Def.Sprite{
-		Texture="./NPS-gradient.png",
+		Texture="../../../../../Graphics/NPS-gradient.png",
 		InitCommand=function(self)
 			self:zoomto(_screen.w/2, height)
 				:align(0,0)
