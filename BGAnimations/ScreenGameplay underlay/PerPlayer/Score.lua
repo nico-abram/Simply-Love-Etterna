@@ -1,6 +1,6 @@
 local player = ...
 
-if SL[ ToEnumShortString(player) ].ActiveModifiers.HideScore then
+if SL[ ToEnumShortString(player) ].ActiveModifiers.HideScore or SL[ToEnumShortString(player)].ActiveModifiers.DensityGraph ~= "Disabled" then
 	return false
 else
 
