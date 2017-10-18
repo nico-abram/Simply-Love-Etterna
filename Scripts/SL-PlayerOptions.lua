@@ -365,6 +365,7 @@ local Overrides = {
 			local choice = 	SL[ToEnumShortString(pn)].ActiveModifiers.DensityGraph or "Disabled"
 			local i = FindInTable(choice, self.Choices) or 1
 			list[i] = true
+			return list
 		end,
 		SaveSelections = function(self, list, pn)
 			local mods = SL[ToEnumShortString(pn)].ActiveModifiers
