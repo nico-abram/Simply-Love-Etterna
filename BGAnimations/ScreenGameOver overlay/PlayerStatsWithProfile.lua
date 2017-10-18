@@ -23,7 +23,7 @@ local seconds = round(totalTime%60)
 
 local lines = {
 	ScreenString("LastUsedHighScoreName") .. "\n" .. playerName,
-	ScreenString("CaloriesBurned") .. "\n" .. calories,
+	"Triple Cheese Burgers" .. "\n",
 	ScreenString("TotalSongsPlayed") .. "\n"..totalSongs,
 	"---",
 	ScreenString("CurrentCombo") .. "\n"..currentCombo,
