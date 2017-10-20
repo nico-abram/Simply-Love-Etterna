@@ -96,14 +96,12 @@ if NPSperMeasure and #NPSperMeasure > 1 then
  			-- we've reached a new song, so reset the vertices for the density graph
  			-- this will occur at the start of each new song in CourseMode
  			-- and at the start of "normal" gameplay
- 			verts = {}
- 			self:SetNumVertices(#verts):SetVertices(verts)
  			self:queuecommand("Reinitalize")
  		end,
  		ReinitalizeCommand=function(self)
- 			InitializeNPSHistogram()
- 			SongNumberInCourse = SongNumberInCourse + 1
- 			self:SetVertices(verts)
+			InitializeNPSHistogram()
+			SongNumberInCourse = SongNumberInCourse + 1
+ 			self:SetNumVertices(#verts):SetVertices(verts)
  		end
 	}
 
