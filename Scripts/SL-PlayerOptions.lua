@@ -359,6 +359,25 @@ local Overrides = {
 		Choices = function() return { "Standard", "Surround" } end,
 	},
 	-------------------------------------------------------------------------
+	DensityGraph = {
+		Choices = function() return { "Disabled", "Enabled" } end,
+		LoadSelections = function(self, list, pn)
+			local choice = 	SL[ToEnumShortString(pn)].ActiveModifiers.DensityGraph or "Disabled"
+			local i = FindInTable(choice, self.Choices) or 1
+			list[i] = true
+			return list
+		end,
+		SaveSelections = function(self, list, pn)
+			local mods = SL[ToEnumShortString(pn)].ActiveModifiers
+
+			for i=1,#self.Choices do
+				if list[i] then
+					mods.DensityGraph = self.Choices[i]
+				end
+			end
+		end
+	},
+	-------------------------------------------------------------------------
 	ScreenAfterPlayerOptions = {
 		Choices = function()
 			if SL.Global.GameMode == "Casual" then
