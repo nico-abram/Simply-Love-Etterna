@@ -3,6 +3,10 @@ local t = Def.ActorFrame{
 		self:playcommand("StepsHaveChanged", {Direction=params.Direction, Player=params.Player})
 	end,
 
+	StorageDevicesChangedMessageCommand=function(self)
+		SCREENMAN:SetNewScreen("ScreenProfileLoad")
+	end,
+
 	-- make the MusicWheel appear to cascade down
 	LoadActor("./MusicWheelAnimation.lua"),
 	-- Apply player modifiers from profile
