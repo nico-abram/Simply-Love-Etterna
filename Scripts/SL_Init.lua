@@ -165,7 +165,7 @@ SL = {
 			TimingWindowSecondsW4=0.135000,
 			TimingWindowSecondsW5=0.180000,
 			TimingWindowSecondsHold=0.320000,
-			TimingWindowSecondsMine=0.070000,
+			TimingWindowSecondsMine=0.043000,
 			TimingWindowSecondsRoll=0.350000,
 		},
 		ECFA = {
@@ -181,7 +181,7 @@ SL = {
 			TimingWindowSecondsW4=0.102000,
 			TimingWindowSecondsW5=0.135000,
 			TimingWindowSecondsHold=0.320000,
-			TimingWindowSecondsMine=0.070000,
+			TimingWindowSecondsMine=0.043000,
 			TimingWindowSecondsRoll=0.350000,
 		},
 		StomperZ = {
