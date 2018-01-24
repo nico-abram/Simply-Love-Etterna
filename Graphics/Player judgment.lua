@@ -1,7 +1,7 @@
 local player = Var "Player"
 local pn = ToEnumShortString(player)
 local mods = SL[pn].ActiveModifiers
-local kids, JudgmentSet
+local kids, JudgmentSet, ProtimingNotch, ProtimingBackground
 
 if mods.JudgmentGraphic == "None" then
 	return Def.Actor{}
@@ -66,6 +66,8 @@ local t = Def.ActorFrame {
 	InitCommand=function(self)
 		kids = self:GetChildren()
 		JudgmentSet = kids.JudgmentWithOffsets
+		ProtimingNotch = kids.ProtimingNotch
+		ProtimingBackground = kids.ProtimingBackground
 	end,
 
 	JudgmentMessageCommand=function(self, param)
@@ -99,6 +101,15 @@ local t = Def.ActorFrame {
 
 		JudgmentSet:decelerate(0.1):zoom(0.75):sleep(1)
 		JudgmentSet:accelerate(0.2):zoom(0)
+
+		if param.TapNoteScore == "TapNoteScore_W1" then
+			local notchPosition = scale(param.TapNoteOffset, -SL.Preferences[SL.Global.GameMode]["TimingWindowSecondsW1"], SL.Preferences[SL.Global.GameMode]["TimingWindowSecondsW1"], -100, 100)
+			ProtimingNotch:visible(true):smooth(0.05):x(notchPosition)
+			ProtimingBackground:visible(true)
+		else
+			ProtimingNotch:visible(false)
+			ProtimingBackground:visible(false)
+		end
 	end,
 
 	Def.Sprite{
@@ -132,6 +143,20 @@ local t = Def.ActorFrame {
 
 		end,
 		ResetCommand=cmd(finishtweening; stopeffect; visible,false)
+	},
+
+	Def.Quad {
+		Name="ProtimingNotch",
+		InitCommand=function(self)
+			self:zoomto(5, 10):y(30):diffuse(SL.JudgmentColors[SL.Global.GameMode][1]):diffusealpha(0.6):visible(false)
+		end
+	},
+
+	Def.Quad {
+		Name="ProtimingBackground",
+		InitCommand=function(self)
+			self:SetHeight(2):SetWidth(200):y(30):diffuse(SL.JudgmentColors[SL.Global.GameMode][1]):diffusealpha(0.3):visible(false)
+		end
 	}
 }
 
