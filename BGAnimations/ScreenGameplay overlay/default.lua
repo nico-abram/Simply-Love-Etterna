@@ -19,6 +19,11 @@ local t = Def.ActorFrame{
 			local p = ToEnumShortString(player)
 			SL[p].Stages.Stats[SL.Global.Stages.PlayedThisGame + 1].duration = duration_played
 		end
+	end,
+	CodeMessageCommand=function(self, params)
+		if params.Name == "Restart" then
+			SCREENMAN:SetNewScreen("ScreenGameplay")
+		end
 	end
 }
 
