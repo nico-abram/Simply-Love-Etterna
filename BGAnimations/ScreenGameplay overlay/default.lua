@@ -29,7 +29,8 @@ local t = Def.ActorFrame{
 
 for player in ivalues( GAMESTATE:GetHumanPlayers() ) do
 	SL[ToEnumShortString(player)].Stages.Stats[SL.Global.Stages.PlayedThisGame + 1] = {}
-	
+
+	t[#t+1] = LoadActor("./LaneCover.lua", player)
 	t[#t+1] = LoadActor("./PerColumnJudgmentTracking.lua", player)
 	t[#t+1] = LoadActor("./ReceptorArrowsPosition.lua", player)
 	t[#t+1] = LoadActor("./JudgmentOffsetTracking.lua", player)
