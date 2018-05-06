@@ -378,6 +378,17 @@ local Overrides = {
 		end
 	},
 	-------------------------------------------------------------------------
+	LaneCover = {
+		LayoutType = "ShowOneInRow",
+		Choices = function()
+			local first	= 0
+			local last 	= 100
+			local step 	= 1
+
+			return stringify( range(first, last, step), "%g%%")
+		end,
+	},
+	-------------------------------------------------------------------------
 	ScreenAfterPlayerOptions = {
 		Choices = function()
 			if SL.Global.GameMode == "Casual" then
@@ -434,7 +445,7 @@ local Overrides = {
 				if list[2] then SL.Global.ScreenAfter.PlayerOptions2 = "ScreenPlayerOptions" end
 			end
 		end
-	}
+	},
 	-------------------------------------------------------------------------
 }
 
