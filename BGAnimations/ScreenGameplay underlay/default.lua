@@ -40,4 +40,6 @@ if GAMESTATE:IsPlayerEnabled(PLAYER_1) and GAMESTATE:IsPlayerEnabled(PLAYER_2) t
 	t[#t+1] = LoadActor("./Shared/WhoIsCurrentlyWinning.lua")
 end
 
+t[#t+1] = LoadActor("./Shared/SyncStartScores.lua")
+
 return t
