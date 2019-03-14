@@ -21,10 +21,14 @@ local GetLocalProfiles = function()
 		local ProfileCard = Def.ActorFrame {
 			LoadFont("_miso") .. {
 				Text=profile:GetDisplayName(),
-				InitCommand=cmd(y,-10;zoom,1;ztest,true)
+				InitCommand=function(self)
+					self:y(-10):zoom(1):ztest(true)
+				end
 			},
 			LoadFont("_miso") .. {
-				InitCommand=cmd(y,8;zoom,0.5;vertspacing,-8;ztest,true),
+				InitCommand=function(self)
+					self:y(8):zoom(0.5):vertspacing(-8):ztest(true)
+				end,
 				BeginCommand=function(self)
 					local numSongsPlayed = profile:GetNumTotalSongsPlayed()
 					self:settext( string.format( GetSongsPlayedString( numSongsPlayed ), numSongsPlayed ) )
@@ -179,13 +183,19 @@ local t = Def.ActorFrame {
 	children = {
 		-- sounds
 		LoadActor( THEME:GetPathS("Common","start") )..{
-			StartButtonMessageCommand=cmd(play)
+			StartButtonMessageCommand=function(self)
+				self:play()
+			end
 		},
 		LoadActor( THEME:GetPathS("ScreenSelectMusic","select down") )..{
-			BackButtonMessageCommand=cmd(play)
+			BackButtonMessageCommand=function(self)
+				self:play()
+			end
 		},
 		LoadActor( THEME:GetPathS("ScreenSelectMaster","change") )..{
-			DirectionButtonMessageCommand=cmd(play)
+			DirectionButtonMessageCommand=function(self)
+				self:play()
+			end
 		},
 		LoadActor( THEME:GetPathS("Common", "invalid") )..{
 			InvalidChoiceMessageCommand=function(self) self:play() end
@@ -221,7 +231,9 @@ local PlayerFrame = function(player)
 
 				LoadFont("_miso") .. {
 					Text=THEME:GetString("ScreenSelectProfile", "PressStartToJoin"),
-					InitCommand=cmd(diffuseshift;effectcolor1,Color('White');effectcolor2,color("0.5,0.5,0.5"); diffusealpha, 0),
+					InitCommand=function(self)
+						self:diffuseshift():effectcolor1(Color('White')):effectcolor2(color("0.5,0.5,0.5")):diffusealpha(0)
+					end,
 					OnCommand=function(self) self:sleep(0.3):linear(0.1):diffusealpha(1) end,
 					OffCommand=function(self) self:linear(0.1):diffusealpha(0) end
 				},
@@ -234,10 +246,14 @@ local PlayerFrame = function(player)
 
 			Def.ActorFrame {
 				Name='SmallFrame',
-				InitCommand=cmd(y,-2),
+				InitCommand=function(self)
+					self:y(-2)
+				end,
 
 				Def.Quad {
-					InitCommand=cmd(zoomto,200-10,40+2; diffuse,Color('Black'); diffusealpha,0),
+					InitCommand=function(self)
+						self:zoomto(200-10,40+2):diffuse(Color('Black')):diffusealpha(0)
+					end,
 					OnCommand=function(self) self:sleep(0.3):linear(0.1):diffusealpha(0.5) end,
 				},
 			},
@@ -254,7 +270,9 @@ local PlayerFrame = function(player)
 			Def.ActorScroller{
 				Name='Scroller',
 				NumItemsToDraw=6,
-				InitCommand=cmd(y,1;SetFastCatchup,true;SetMask,200,58;SetSecondsPerItem,0.15; diffusealpha,0),
+				InitCommand=function(self)
+					self:y(1):SetFastCatchup(true):SetMask(200,58):SetSecondsPerItem(0.15):diffusealpha(0)
+				end,
 				OnCommand=function(self) self:sleep(0.3):linear(0.1):diffusealpha(1) end,
 				TransformFunction=function(self, offset, itemIndex, numItems)
 					local focus = scale(math.abs(offset),0,2,1,0)
@@ -267,7 +285,9 @@ local PlayerFrame = function(player)
 
 			LoadFont("_miso")..{
 				Name='SelectedProfileText',
-				InitCommand=cmd(y,160; zoom, 1.35; shadowlength, ThemePrefs.Get("RainbowMode") and 0.5 or 0)
+				InitCommand=function(self)
+					self:y(160):zoom(1.35):shadowlength(ThemePrefs.Get("RainbowMode") and 0.5 or 0)
+				end
 			}
 		}
 	}

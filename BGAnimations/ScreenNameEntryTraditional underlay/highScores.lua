@@ -108,22 +108,30 @@ for i=NumStages,1,-1 do
 
 			row[#row+1] = LoadFont("_miso")..{
 				Text=s..". ",
-				InitCommand=cmd(horizalign,right; xy, -120, (s-(lower-1))*22 )
+				InitCommand=function(self)
+					self:horizalign(right):xy(-120, (s-(lower-1))*22)
+				end
 			}
 
 			row[#row+1] = LoadFont("_miso")..{
 				Text=name,
-				InitCommand=cmd(horizalign,left; xy, -110, (s-(lower-1))*22 )
+				InitCommand=function(self)
+					self:horizalign(left):xy(-110, (s-(lower-1))*22)
+				end
 			}
 
 			row[#row+1] = LoadFont("_miso")..{
 				Text=score,
-				InitCommand=cmd(horizalign,left; xy, -24, (s-(lower-1))*22 )
+				InitCommand=function(self)
+					self:horizalign(left):xy(-24, (s-(lower-1))*22)
+				end
 			}
 
 			row[#row+1] = LoadFont("_miso")..{
 				Text=date,
-				InitCommand=cmd(horizalign,left; xy, 50, (s-(lower-1))*22 )
+				InitCommand=function(self)
+					self:horizalign(left):xy(50, (s-(lower-1))*22)
+				end
 			}
 
 			t[#t+1] = row

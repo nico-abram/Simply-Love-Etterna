@@ -16,7 +16,9 @@ if path then
 			-- ... then display it!
 			t[#t+1] = Def.Banner{
 				Name="RewardBanner",
-				InitCommand=cmd(xy, _screen.cx, _screen.cy-55; ),
+				InitCommand=function(self)
+					self:xy(_screen.cx, _screen.cy-55): ()
+				end,
 				OnCommand=function(self)
 					self:LoadFromSong(song)
 					-- apply these after loading the banner
@@ -29,7 +31,9 @@ if path then
 		-- regardless of banner or not-banner, display some reward text
 		t[#t+1] = LoadFont("_miso")..{
 			Name="RewardText",
-			InitCommand=cmd(xy, _screen.cx, 110; zoom,1.25),
+			InitCommand=function(self)
+				self:xy(_screen.cx, 110):zoom(1.25)
+			end,
 			OnCommand=function(self)
 				self:settext("You have unlocked: "..path)
 			end
@@ -53,7 +57,9 @@ else
 	t[#t+1] = LoadFont("_miso")..{
 		Name="FailureText",
 		Text="Not quite...",
-		InitCommand=cmd(xy, _screen.cx,_screen.cy-50; zoom,1.4)
+		InitCommand=function(self)
+			self:xy(_screen.cx,_screen.cy-50):zoom(1.4)
+		end
 	}
 
 	-- this is a sound to be played upon a failure to unlock

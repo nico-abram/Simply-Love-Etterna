@@ -31,16 +31,26 @@ end
 
 
 local t = Def.ActorFrame {
-	InitCommand=cmd(xy,_screen.cx, _screen.cy);
+	InitCommand=function(self)
+		self:xy(_screen.cx, _screen.cy)
+	end;
 	
 	Def.Quad{
-		InitCommand=cmd(zoomto,_screen.w,_screen.h; diffuse,color("0,0,0,1"););
-		OnCommand=cmd(sleep,0.2; linear,0.5;  diffusealpha,0);
+		InitCommand=function(self)
+			self:zoomto(_screen.w,_screen.h):diffuse(color("0,0,0,1"))
+		end;
+		OnCommand=function(self)
+			self:sleep(0.2):linear(0.5):diffusealpha(0)
+		end;
 	};
 	
 	LoadActor(img)..{
-		InitCommand=cmd(zoom,0.8; diffusealpha,0;);
-		OnCommand=cmd(accelerate,0.4;diffusealpha,1; sleep,1.3; decelerate,0.4;diffusealpha,0);
+		InitCommand=function(self)
+			self:zoom(0.8):diffusealpha(0)
+		end;
+		OnCommand=function(self)
+			self:accelerate(0.4):diffusealpha(1):sleep(1.3):decelerate(0.4):diffusealpha(0)
+		end;
 	}
 	
 };

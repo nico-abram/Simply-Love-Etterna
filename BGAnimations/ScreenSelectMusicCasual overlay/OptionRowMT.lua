@@ -13,12 +13,18 @@ local optionrow_mt = {
 					self.container = subself
 					subself:diffusealpha(0):queuecommand("Hide2")
 				end,
-				OnCommand=cmd(y, item_index * 62),
+				OnCommand=function(self)
+					self:y(item_index * 62)
+				end,
 
-				HideCommand=cmd( linear, 0.2; diffusealpha, 0; queuecommand, "Hide2"),
+				HideCommand=function(self)
+					self:linear(0.2):diffusealpha(0):queuecommand("Hide2")
+				end,
 				Hide2Command=function(subself) subself:visible(false) end,
 				UnhideCommand=function(subself) subself:visible(true):queuecommand("Unhide2") end,
-				Unhide2Command=cmd( sleep, 0.3; linear, 0.2; diffusealpha, 1),
+				Unhide2Command=function(self)
+					self:sleep(0.3):linear(0.2):diffusealpha(1)
+				end,
 
 
 				-- helptext
@@ -29,8 +35,12 @@ local optionrow_mt = {
 						subself:horizalign(left):zoom(0.9)
 							:diffuse(Color.White):diffusealpha(0.5)
 					end,
-					GainFocusCommand=cmd(diffusealpha, 0.85 ),
-					LoseFocusCommand=cmd(diffusealpha, 0.5 )
+					GainFocusCommand=function(self)
+						self:diffusealpha(0.85)
+					end,
+					LoseFocusCommand=function(self)
+						self:diffusealpha(0.5)
+					end
 				},
 
 				-- bg quad
@@ -39,67 +49,105 @@ local optionrow_mt = {
 						self.bgQuad = subself
 						subself:horizalign(left):zoomto(200, 28):diffuse(Color.White):diffusealpha(0.5)
 					end,
-					OnCommand=cmd(y, 26),
-					GainFocusCommand=cmd(diffusealpha, 1),
-					LoseFocusCommand=cmd(diffusealpha, 0.5),
+					OnCommand=function(self)
+						self:y(26)
+					end,
+					GainFocusCommand=function(self)
+						self:diffusealpha(1)
+					end,
+					LoseFocusCommand=function(self)
+						self:diffusealpha(0.5)
+					end,
 				},
 
 				Def.ActorFrame{
 					Name="Cursor",
 					InitCommand=function(subself) self.cursor = subself end,
 					OnCommand=function(self) self:y(26) end,
-					LoseFocusCommand=cmd(diffusealpha, 0),
-					GainFocusCommand=cmd(diffusealpha, 1),
+					LoseFocusCommand=function(self)
+						self:diffusealpha(0)
+					end,
+					GainFocusCommand=function(self)
+						self:diffusealpha(1)
+					end,
 
 					-- right arrow
 					Def.ActorFrame{
 						Name="RightArrow",
-						OnCommand=cmd(x, 216),
-						PressCommand=cmd(decelerate,0.05; zoom,0.7; glow,color("#ffffff22"); accelerate,0.05; zoom,1; glow, color("#ffffff00");),
+						OnCommand=function(self)
+							self:x(216)
+						end,
+						PressCommand=function(self)
+							self:decelerate(0.05):zoom(0.7):glow(color("#ffffff22")):accelerate(0.05):zoom(1):glow(color("#ffffff00"))
+						end,
 						ExitRowCommand=function(subself, params)
 							subself:y(-15)
 							if params.PlayerNumber == PLAYER_2 then subself:x(20) end
 						end,
-						SingleSongCanceledMessageCommand=cmd(rotationz, 0),
-						BothPlayersAreReadyMessageCommand=cmd(finishtweening; sleep,0.2; linear,0.2; rotationz, 180),
-						CancelBothPlayersAreReadyMessageCommand=cmd(rotationz, 0),
+						SingleSongCanceledMessageCommand=function(self)
+							self:rotationz(0)
+						end,
+						BothPlayersAreReadyMessageCommand=function(self)
+							self:finishtweening():sleep(0.2):linear(0.2):rotationz(180)
+						end,
+						CancelBothPlayersAreReadyMessageCommand=function(self)
+							self:rotationz(0)
+						end,
 
 						LoadActor("./img/arrow_glow.png")..{
 							Name="RightArrowGlow",
-							InitCommand=cmd(zoom,0.15),
+							InitCommand=function(self)
+								self:zoom(0.15)
+							end,
 							OnCommand=function(subself)
 								subself:diffuseshift():effectcolor1(1,1,1,0):effectcolor2(1,1,1,1)
 							end
 						},
 						LoadActor("./img/arrow.png")..{
 							Name="RightArrow",
-							InitCommand=cmd(zoom,0.15; diffuse, Color.White ),
+							InitCommand=function(self)
+								self:zoom(0.15):diffuse(Color.White)
+							end,
 						}
 					},
 
 					-- left arrow
 					Def.ActorFrame{
 						Name="LeftArrow",
-						OnCommand=cmd(x, -16),
-						PressCommand=cmd(decelerate,0.05; zoom,0.7; glow,color("#ffffff22"); accelerate,0.05; zoom,1; glow, color("#ffffff00")),
+						OnCommand=function(self)
+							self:x(-16)
+						end,
+						PressCommand=function(self)
+							self:decelerate(0.05):zoom(0.7):glow(color("#ffffff22")):accelerate(0.05):zoom(1):glow(color("#ffffff00"))
+						end,
 						ExitRowCommand=function(subself, params)
 							subself:y(-15)
 							if params.PlayerNumber == PLAYER_1 then subself:x(180) end
 						end,
-						SingleSongCanceledMessageCommand=cmd(rotationz, 0),
-						BothPlayersAreReadyMessageCommand=cmd(finishtweening; sleep,0.2; linear,0.2; rotationz, 180),
-						CancelBothPlayersAreReadyMessageCommand=cmd(rotationz, 0),
+						SingleSongCanceledMessageCommand=function(self)
+							self:rotationz(0)
+						end,
+						BothPlayersAreReadyMessageCommand=function(self)
+							self:finishtweening():sleep(0.2):linear(0.2):rotationz(180)
+						end,
+						CancelBothPlayersAreReadyMessageCommand=function(self)
+							self:rotationz(0)
+						end,
 
 						LoadActor("./img/arrow_glow.png")..{
 							Name="LeftArrowGlow",
-							InitCommand=cmd(zoom,0.15; rotationz, 180),
+							InitCommand=function(self)
+								self:zoom(0.15):rotationz(180)
+							end,
 							OnCommand=function(subself)
 								subself:diffuseshift():effectcolor1(1,1,1,0):effectcolor2(1,1,1,1)
 							end
 						},
 						LoadActor("./img/arrow.png")..{
 							Name="LeftArrow",
-							InitCommand=cmd(zoom,0.15; diffuse, Color.White; rotationz, 180),
+							InitCommand=function(self)
+								self:zoom(0.15):diffuse(Color.White):rotationz(180)
+							end,
 
 						}
 					}

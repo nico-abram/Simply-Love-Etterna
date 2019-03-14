@@ -106,7 +106,9 @@ local t = Def.ActorFrame {
 
 	-- OptionsList Header Quad
 	Def.Quad {
-		InitCommand=cmd(Center; zoomto,sortmenu.w+2,22; xy, _screen.cx, _screen.cy-92)
+		InitCommand=function(self)
+			self:Center():zoomto(sortmenu.w+2,22):xy(_screen.cx, _screen.cy-92)
+		end
 	},
 	-- "Options" text
 	Def.BitmapText{
@@ -120,19 +122,27 @@ local t = Def.ActorFrame {
 
 	-- white border
 	Def.Quad {
-		InitCommand=cmd(Center; zoomto,sortmenu.w+2,sortmenu.h+2)
+		InitCommand=function(self)
+			self:Center():zoomto(sortmenu.w+2,sortmenu.h+2)
+		end
 	},
 	-- BG of the sortmenu box
 	Def.Quad {
-		InitCommand=cmd(Center; zoomto,sortmenu.w,sortmenu.h; diffuse,Color.Black)
+		InitCommand=function(self)
+			self:Center():zoomto(sortmenu.w,sortmenu.h):diffuse(Color.Black)
+		end
 	},
 	-- top mask
 	Def.Quad {
-		InitCommand=cmd(Center; zoomto,sortmenu.w,_screen.h/2; y,40; MaskSource )
+		InitCommand=function(self)
+			self:Center():zoomto(sortmenu.w,_screen.h/2):y(40): MaskSource ()
+		end
 	},
 	-- bottom mask
 	Def.Quad {
-		InitCommand=cmd(zoomto,sortmenu.w,_screen.h/2; xy,_screen.cx,_screen.cy+200; MaskSource)
+		InitCommand=function(self)
+			self:zoomto(sortmenu.w,_screen.h/2):xy(_screen.cx,_screen.cy+200): MaskSource()
+		end
 	},
 
 	-- "Press SELECT To Cancel" text

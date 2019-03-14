@@ -1,4 +1,6 @@
 return Def.ActorFrame{
-	OnCommand=cmd(zoom,0.85);
+	OnCommand=function(self)
+		self:zoom(0.85)
+	end;
 	LoadActor("graphics/a-plus.png");
 };

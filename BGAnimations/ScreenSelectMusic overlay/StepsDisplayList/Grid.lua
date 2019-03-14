@@ -6,13 +6,23 @@ local StepsToDisplay, SongOrCourse, StepsOrTrails
 
 local t = Def.ActorFrame{
 	Name="StepsDisplayList",
-	InitCommand=cmd(vertalign, top; draworder, 1; xy, _screen.cx-170, _screen.cy + 70),
+	InitCommand=function(self)
+		self:vertalign(top):draworder(1):xy(_screen.cx-170, _screen.cy + 70)
+	end,
 	-- - - - - - - - - - - - - -
 
-	OnCommand=cmd(queuecommand, "RedrawStepsDisplay"),
-	CurrentSongChangedMessageCommand=cmd(queuecommand, "RedrawStepsDisplay"),
-	CurrentCourseChangedMessageCommand=cmd(queuecommand, "RedrawStepsDisplay"),
-	StepsHaveChangedCommand=cmd(queuecommand, "RedrawStepsDisplay"),
+	OnCommand=function(self)
+		self:queuecommand("RedrawStepsDisplay")
+	end,
+	CurrentSongChangedMessageCommand=function(self)
+		self:queuecommand("RedrawStepsDisplay")
+	end,
+	CurrentCourseChangedMessageCommand=function(self)
+		self:queuecommand("RedrawStepsDisplay")
+	end,
+	StepsHaveChangedCommand=function(self)
+		self:queuecommand("RedrawStepsDisplay")
+	end,
 
 	-- - - - - - - - - - - - - -
 
@@ -67,7 +77,9 @@ local t = Def.ActorFrame{
 
 local Grid = Def.ActorFrame{
 	Name="Grid",
-	InitCommand=cmd(horizalign, left; vertalign, top; xy, 8, -52 ),
+	InitCommand=function(self)
+		self:horizalign(left):vertalign(top):xy(8, -52)
+	end,
 }
 
 
@@ -77,7 +89,9 @@ Grid[#Grid+1] = Def.Sprite{
 	Name="BackgroundBlocks",
 	Texture=THEME:GetPathB("ScreenSelectMusic", "overlay/StepsDisplayList/_block.png"),
 
-	InitCommand=cmd(diffuse, color("#182025") ),
+	InitCommand=function(self)
+		self:diffuse(color("#182025"))
+	end,
 	OnCommand=function(self)
 		local width = self:GetWidth()
 		local height= self:GetHeight()
@@ -93,7 +107,9 @@ for RowNumber=1,GridRows do
 		Name="Blocks_"..RowNumber,
 		Texture=THEME:GetPathB("ScreenSelectMusic", "overlay/StepsDisplayList/_block.png"),
 
-		InitCommand=cmd(diffusealpha,0),
+		InitCommand=function(self)
+			self:diffusealpha(0)
+		end,
 		OnCommand=function(self)
 			local width = self:GetWidth()
 			local height= self:GetHeight()
@@ -133,7 +149,9 @@ for RowNumber=1,GridRows do
 			self:diffuse( DifficultyColor(params.Difficulty) )
 			self:settext(params.Meter)
 		end,
-		UnsetCommand=cmd(settext, ""; diffuse,color("#182025")),
+		UnsetCommand=function(self)
+			self:settext(""):diffuse(color("#182025"))
+		end,
 	}
 end
 

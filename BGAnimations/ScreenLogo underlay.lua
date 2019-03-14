@@ -23,14 +23,20 @@ local t = Def.ActorFrame{
 			self:x(_screen.cx+2):diffusealpha(0):zoom(0.7)
 				:shadowlength(1)
 		end,
-		OnCommand=cmd(linear,0.5; diffusealpha, 1)
+		OnCommand=function(self)
+			self:linear(0.5):diffusealpha(1)
+		end
 	}
 }
 
 
 local af = Def.ActorFrame{
-	OnCommand=cmd(queuecommand,"Refresh"),
-	CoinModeChangedMessageCommand=cmd(queuecommand,"Refresh"),
+	OnCommand=function(self)
+		self:queuecommand("Refresh")
+	end,
+	CoinModeChangedMessageCommand=function(self)
+		self:queuecommand("Refresh")
+	end,
 	RefreshCommand=function(self)
 		self:visible(true)
 		self:diffuseshift()
@@ -38,12 +44,16 @@ local af = Def.ActorFrame{
 		self:effectcolor1(1,1,1,0)
 		self:effectcolor2(1,1,1,1)
 	end,
-	OffCommand=cmd(visible,false),
+	OffCommand=function(self)
+		self:visible(false)
+	end,
 
 
 	LoadFont("_wendy small")..{
 		Text=THEME:GetString("ScreenLogo", "EnterCreditsToPlay"),
-		InitCommand=cmd(xy,_screen.cx,SCREEN_BOTTOM-100; zoom,0.525; visible,false),
+		InitCommand=function(self)
+			self:xy(_screen.cx,SCREEN_BOTTOM-100):zoom(0.525):visible(false)
+		end,
 		RefreshCommand=function(self)
 			local credits = GetCredits()
 			self:visible( GAMESTATE:GetCoinMode() == "CoinMode_Pay" and credits.Credits <= 0 )
@@ -52,7 +62,9 @@ local af = Def.ActorFrame{
 
 	LoadFont("_wendy small")..{
 		Text=THEME:GetString("ScreenTitleJoin", "Press Start"),
-		InitCommand=cmd(xy,_screen.cx, _screen.h-80; zoom,0.715; visible,false),
+		InitCommand=function(self)
+			self:xy(_screen.cx, _screen.h-80):zoom(0.715):visible(false)
+		end,
 		RefreshCommand=function(self)
 			local credits = GetCredits()
 			self:visible( (GAMESTATE:GetCoinMode() == "CoinMode_Pay" and credits.Credits > 0) or GAMESTATE:GetCoinMode() == "CoinMode_Free")
@@ -61,7 +73,9 @@ local af = Def.ActorFrame{
 
 	LoadFont("_wendy small")..{
 		Text=THEME:GetString("ScreenSelectMusic","Start Button"),
-		InitCommand=cmd(x,_screen.cx - 12; y,_screen.h - 125; zoom,1.1; visible,false),
+		InitCommand=function(self)
+			self:x(_screen.cx - 12):y(_screen.h - 125):zoom(1.1):visible(false)
+		end,
 		RefreshCommand=function(self)
 			local credits = GetCredits()
 			self:visible( (GAMESTATE:GetCoinMode() == "CoinMode_Pay" and credits.Credits > 0) or GAMESTATE:GetCoinMode() == "CoinMode_Free")

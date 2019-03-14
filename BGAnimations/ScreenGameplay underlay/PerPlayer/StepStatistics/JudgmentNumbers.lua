@@ -56,7 +56,9 @@ for index, RCType in ipairs(RadarCategories) do
 	t[#t+1] = Def.BitmapText{
 		Font="_ScreenEvaluation numbers",
 		Text="000",
-		InitCommand=cmd(zoom,0.5; horizalign, right),
+		InitCommand=function(self)
+			self:zoom(0.5):horizalign(right)
+		end,
 		BeginCommand=function(self)
 			self:y((index-1)*35 - 178)
 			self:x( -54 )
@@ -91,7 +93,9 @@ for index, RCType in ipairs(RadarCategories) do
 	--  slash
 	t[#t+1] = LoadFont("_miso")..{
 		Text="/",
-		InitCommand=cmd(diffuse,color("#5A6166"); zoom, 1.25; horizalign, right),
+		InitCommand=function(self)
+			self:diffuse(color("#5A6166")):zoom(1.25):horizalign(right)
+		end,
 		BeginCommand=function(self)
 			self:y((index-1)*35 - 178)
 			self:x(-40)
@@ -101,7 +105,9 @@ for index, RCType in ipairs(RadarCategories) do
 	-- possible value
 	t[#t+1] = Def.BitmapText{
 		Font="_ScreenEvaluation numbers",
-		InitCommand=cmd(zoom,0.5; horizalign, right),
+		InitCommand=function(self)
+			self:zoom(0.5):horizalign(right)
+		end,
 		BeginCommand=function(self)
 
 			StepsOrTrail = (GAMESTATE:IsCourseMode() and GAMESTATE:GetCurrentTrail(player)) or GAMESTATE:GetCurrentSteps(player)

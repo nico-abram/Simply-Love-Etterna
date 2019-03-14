@@ -33,26 +33,42 @@ for pn in ivalues(Players) do
 			end
 			self:y(_screen.cy);
 		end;
-		OnCommand=cmd(linear,0.3;diffusealpha,1);
-		OffCommand=cmd(linear,0.2;diffusealpha,0);
+		OnCommand=function(self)
+			self:linear(0.3):diffusealpha(1)
+		end;
+		OffCommand=function(self)
+			self:linear(0.2):diffusealpha(0)
+		end;
 	
 		LoadFont("_wendy small")..{
 			Text="PLAYER "..ToEnumShortString(pn):gsub("P","");
-			InitCommand=cmd(y,-210;zoom,0.7)
+			InitCommand=function(self)
+				self:y(-210):zoom(0.7)
+			end
 		};
 		LoadActor(game..".png")..{
-			InitCommand=cmd(y,-80; zoom,0.8);
+			InitCommand=function(self)
+				self:y(-80):zoom(0.8)
+			end;
 		};
 		LoadActor("buttons.png")..{
-			InitCommand=cmd(y,80; zoom,0.5);
+			InitCommand=function(self)
+				self:y(80):zoom(0.5)
+			end;
 		};
 	}
 	
 	for panel,values in pairs(Highlights) do
 		PlayerPad[#PlayerPad+1] = LoadActor( values.graphic )..{
-			InitCommand=cmd(xy,values.x, values.y; rotationz,values.rotationz; zoom, values.zoom; diffusealpha,0);
-			[ToEnumShortString(pn) .. panel .."OnMessageCommand"]=cmd(diffusealpha,1);
-			[ToEnumShortString(pn) .. panel .."OffMessageCommand"]=cmd(diffusealpha,0);
+			InitCommand=function(self)
+				self:xy(values.x, values.y):rotationz(values.rotationz):zoom(values.zoom):diffusealpha(0)
+			end;
+			[ToEnumShortString(pn) .. panel .."OnMessageCommand"]=function(self)
+				self:diffusealpha(1)
+			end;
+			[ToEnumShortString(pn) .. panel .."OffMessageCommand"]=function(self)
+				self:diffusealpha(0)
+			end;
 		}
 	end
 	

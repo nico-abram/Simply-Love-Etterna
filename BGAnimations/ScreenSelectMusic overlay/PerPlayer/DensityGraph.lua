@@ -25,9 +25,15 @@ local padding = 10
 
 return Def.ActorFrame {
     -- song and course changes
-    OnCommand=cmd(queuecommand, "StepsHaveChanged"),
-    CurrentSongChangedMessageCommand=cmd(queuecommand, "StepsHaveChanged"),
-    CurrentCourseChangedMessageCommand=cmd(queuecommand, "StepsHaveChanged"),
+    OnCommand=function(self)
+    	self:queuecommand("StepsHaveChanged")
+    end,
+    CurrentSongChangedMessageCommand=function(self)
+    	self:queuecommand("StepsHaveChanged")
+    end,
+    CurrentCourseChangedMessageCommand=function(self)
+    	self:queuecommand("StepsHaveChanged")
+    end,
 
     InitCommand=function(self)
         local zoom, xPos

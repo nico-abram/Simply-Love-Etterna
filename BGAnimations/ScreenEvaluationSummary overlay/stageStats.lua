@@ -33,7 +33,9 @@ local t = Def.ActorFrame{
 
 	--fallback banner
 	LoadActor( THEME:GetPathB("ScreenSelectMusic", "overlay/colored_banners/".. (banner_directory[ThemePrefs.Get("VisualTheme")] or "Hearts") .."/banner"..SL.Global.ActiveColorIndex.." (doubleres).png"))..{
-		InitCommand=cmd(y,-6; zoom, 0.333)
+		InitCommand=function(self)
+			self:y(-6):zoom(0.333)
+		end
 	},
 
 	-- the banner, if there is one
@@ -55,7 +57,9 @@ local t = Def.ActorFrame{
 
 	-- the title of the song
 	LoadFont("_miso")..{
-		InitCommand=cmd(zoom,0.8; y,-40; maxwidth, 350),
+		InitCommand=function(self)
+			self:zoom(0.8):y(-40):maxwidth(350)
+		end,
 		DrawStageCommand=function(self)
 			if song then
 				self:settext(song:GetDisplayFullTitle())
@@ -65,7 +69,9 @@ local t = Def.ActorFrame{
 
 	-- the BPM(s) of the song
 	LoadFont("_miso")..{
-		InitCommand=cmd(zoom,0.6; y,30; maxwidth, 350),
+		InitCommand=function(self)
+			self:zoom(0.6):y(30):maxwidth(350)
+		end,
 		DrawStageCommand=function(self)
 			if song then
 				local text = ""
@@ -128,7 +134,9 @@ for player in ivalues(Players) do
 
 	--percent score
 	PlayerStatsAF[#PlayerStatsAF+1] = LoadFont("_wendy small")..{
-		InitCommand=cmd(zoom,0.5; horizalign, align1; x,col1x; y,-24),
+		InitCommand=function(self)
+			self:zoom(0.5):horizalign(align1):x(col1x):y(-24)
+		end,
 		DrawStageCommand=function(self)
 			if playerStats and score then
 
@@ -167,7 +175,9 @@ for player in ivalues(Players) do
 
 	-- difficulty meter
 	PlayerStatsAF[#PlayerStatsAF+1] = LoadFont("_wendy small")..{
-		InitCommand=cmd(zoom,0.4; horizalign, align1; x,col1x; y,4),
+		InitCommand=function(self)
+			self:zoom(0.4):horizalign(align1):x(col1x):y(4)
+		end,
 		DrawStageCommand=function(self)
 			if playerStats and difficultyMeter then
 				if difficulty then
@@ -184,7 +194,9 @@ for player in ivalues(Players) do
 
 	-- stepartist
 	PlayerStatsAF[#PlayerStatsAF+1] = LoadFont("_miso")..{
-		InitCommand=cmd(zoom,0.65; horizalign, align1; x,col1x; y,28),
+		InitCommand=function(self)
+			self:zoom(0.65):horizalign(align1):x(col1x):y(28)
+		end,
 		DrawStageCommand=function(self)
 			if playerStats and stepartist then
 				self:settext(stepartist)
@@ -198,7 +210,9 @@ for player in ivalues(Players) do
 	for i=1,#TNSTypes do
 
 		PlayerStatsAF[#PlayerStatsAF+1] = LoadFont("_wendy small")..{
-			InitCommand=cmd(zoom,0.28; horizalign, align2; x,col2x; y,i*13 - 50),
+			InitCommand=function(self)
+				self:zoom(0.28):horizalign(align2):x(col2x):y(i*13 - 50)
+			end,
 			DrawStageCommand=function(self)
 				if playerStats and playerStats.judgments then
 					local val = playerStats.judgments[TNSTypes[i]]

@@ -13,8 +13,12 @@ local optionrow_item_mt = {
 					subself:diffusealpha(0)
 					self.container = subself
 				end,
-				UnhideCommand=cmd( sleep, 0.3; linear, 0.2; diffusealpha, 1),
-				HideCommand=cmd( linear, 0.2; diffusealpha, 0),
+				UnhideCommand=function(self)
+					self:sleep(0.3):linear(0.2):diffusealpha(1)
+				end,
+				HideCommand=function(self)
+					self:linear(0.2):diffusealpha(0)
+				end,
 
 				Def.BitmapText{
 					Font="_miso",
@@ -25,9 +29,15 @@ local optionrow_item_mt = {
 						-- subself:zoom(0.5)
 						subself:diffuse(Color.Black)
 					end,
-					OnCommand=cmd(sleep, 0.13; linear, 0.05; x, 200 ),
-					GainFocusCommand=cmd(diffusealpha, 1 ),
-					LoseFocusCommand=cmd(diffusealpha, 0 )
+					OnCommand=function(self)
+						self:sleep(0.13):linear(0.05):x(200)
+					end,
+					GainFocusCommand=function(self)
+						self:diffusealpha(1)
+					end,
+					LoseFocusCommand=function(self)
+						self:diffusealpha(0)
+					end
 				},
 				Def.BitmapText{
 					Font="_miso",
@@ -38,9 +48,15 @@ local optionrow_item_mt = {
 						-- subself:zoom(0.5)
 						subself:diffuse(Color.Black)
 					end,
-					OnCommand=cmd(sleep, 0.13; linear, 0.05; x, 340 ),
-					GainFocusCommand=cmd(diffusealpha, 1 ),
-					LoseFocusCommand=cmd(diffusealpha, 0 )
+					OnCommand=function(self)
+						self:sleep(0.13):linear(0.05):x(340)
+					end,
+					GainFocusCommand=function(self)
+						self:diffusealpha(1)
+					end,
+					LoseFocusCommand=function(self)
+						self:diffusealpha(0)
+					end
 				}
 			}
 

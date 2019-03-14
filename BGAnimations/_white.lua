@@ -1,3 +1,5 @@
 return Def.Quad{
-	InitCommand=cmd(Center;FullScreen);
+	InitCommand=function(self)
+		self:Center():FullScreen()
+	end;
 };

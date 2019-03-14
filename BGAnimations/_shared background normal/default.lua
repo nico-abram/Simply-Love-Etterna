@@ -43,7 +43,9 @@ local t = Def.ActorFrame {
 			self:diffusealpha(0)
 		end
 	end,
-	OnCommand=cmd(accelerate,0.8; diffusealpha,1),
+	OnCommand=function(self)
+		self:accelerate(0.8):diffusealpha(1)
+	end,
 	BackgroundImageChangedMessageCommand=function(self)
 		if not ThemePrefs.Get("RainbowMode") then
 			self:visible(true):linear(0.6):diffusealpha(1)
@@ -57,9 +59,12 @@ local t = Def.ActorFrame {
 for i=1,10 do
 	t[#t+1] = Def.Sprite {
 		Texture=file,
-		InitCommand=cmd(diffuse, ColorRGB( file_info.ColorRGB[i] ) ),
-		ColorSelectedMessageCommand=cmd(linear, 0.5; diffuse, ColorRGB( file_info.ColorRGB[i] ); diffusealpha, file_info.diffusealpha[i] ),
-		OnCommand=cmd(zoom,1.3; xy, file_info.xy[i], file_info.xy[i]; customtexturerect,0,0,1,1;
+		InitCommand=function(self)
+			self:diffuse(ColorRGB( file_info.ColorRGB[i] ))
+		end,
+		ColorSelectedMessageCommand=function(self)
+			self:linear(0.5):diffuse(ColorRGB( file_info.ColorRGB[i] )):diffusealpha(file_info.diffusealpha[i])
+		end,
 			texcoordvelocity, file_info.texcoordvelocity[i][1], file_info.texcoordvelocity[i][2]; diffusealpha, file_info.diffusealpha[i] ),
 		BackgroundImageChangedMessageCommand=function(self)
 			if not ThemePrefs.Get("RainbowMode") then
@@ -81,7 +86,9 @@ af[#af+1] = Def.ActorFrame{
 			self:visible(false)
 		end
 	end,
-	OnCommand=cmd(Center; bob; effectmagnitude,0,50,0; effectperiod,8),
+	OnCommand=function(self)
+		self:Center(): bob():effectmagnitude(0,50,0):effectperiod(8)
+	end,
 	BackgroundImageChangedMessageCommand=function(self)
 		if ThemePrefs.Get("RainbowMode") then
 			self:visible(true):linear(0.6):diffusealpha(1)
@@ -93,14 +100,20 @@ af[#af+1] = Def.ActorFrame{
 
 
 	Def.ActorFrame{
-		OnCommand=cmd(bob; effectmagnitude,0,0,50; effectperiod,12),
+		OnCommand=function(self)
+			self:bob():effectmagnitude(0,0,50):effectperiod(12)
+		end,
 
 		Def.ActorFrame{
-			InitCommand=cmd(diffusealpha,0; queuecommand, "Appear"; playcommand, "NewColor" ),
+			InitCommand=function(self)
+				self:diffusealpha(0):queuecommand("Appear"):playcommand("NewColor")
+			end,
 			OnCommand=function(self)
 				delay = 0.7
 			end,
-			AppearCommand=cmd(linear,1; diffusealpha, 1; queuecommand, "Loop"),
+			AppearCommand=function(self)
+				self:linear(1):diffusealpha(1):queuecommand("Loop")
+			end,
 			BackgroundImageChangedMessageCommand=function(self)
 				if ThemePrefs.Get("RainbowMode") then
 					local children = self:GetChild("")
@@ -121,152 +134,252 @@ af[#af+1] = Def.ActorFrame{
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom,1.3; x,000; y,-000; z,-030; customtexturerect,0,0,1,1; texcoordvelocity,0.03,.04 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index+1); diffusealpha, 0.3 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(000):y(-000):z(-030):customtexturerect(0,0,1,1):texcoordvelocity(0.03,.04)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index+1)):diffusealpha(0.3)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,-050; y,040; z,-100; customtexturerect,0,0,1,1; texcoordvelocity,0.04,.01 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index+1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(-050):y(040):z(-100):customtexturerect(0,0,1,1):texcoordvelocity(0.04,.01)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index+1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,050; y,-080; z,-100; customtexturerect,0,0,1,1; texcoordvelocity,0.05,.02 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index-1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(050):y(-080):z(-100):customtexturerect(0,0,1,1):texcoordvelocity(0.05,.02)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index-1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,-100; y,120; z,-200; customtexturerect,0,0,1,1; texcoordvelocity,0.06,.02 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index-1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(-100):y(120):z(-200):customtexturerect(0,0,1,1):texcoordvelocity(0.06,.02)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index-1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,100; y,-160; z,-040; customtexturerect,0,0,1,1; texcoordvelocity,0.07,.01 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index+1); diffusealpha, 0.3),
+				InitCommand=function(self)
+					self:zoom(1.3):x(100):y(-160):z(-040):customtexturerect(0,0,1,1):texcoordvelocity(0.07,.01)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index+1)):diffusealpha(0.3)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,-150; y,210; z,-050; customtexturerect,0,0,1,1; texcoordvelocity,0.08,.01 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index-1); diffusealpha, 0.3),
+				InitCommand=function(self)
+					self:zoom(1.3):x(-150):y(210):z(-050):customtexturerect(0,0,1,1):texcoordvelocity(0.08,.01)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index-1)):diffusealpha(0.3)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,150; y,-250; z,-200; customtexturerect,0,0,1,1; texcoordvelocity,0.03,.03 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index-1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(150):y(-250):z(-200):customtexturerect(0,0,1,1):texcoordvelocity(0.03,.03)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index-1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,-200; y,290; z,-060; customtexturerect,0,0,1,1; texcoordvelocity,0.03,.03 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index+1); diffusealpha, 0.3),
+				InitCommand=function(self)
+					self:zoom(1.3):x(-200):y(290):z(-060):customtexturerect(0,0,1,1):texcoordvelocity(0.03,.03)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index+1)):diffusealpha(0.3)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,200; y,-330; z,-100; customtexturerect,0,0,1,1; texcoordvelocity,0.03,.02 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index-1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(200):y(-330):z(-100):customtexturerect(0,0,1,1):texcoordvelocity(0.03,.02)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index-1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,-250; y,370; z,-100; customtexturerect,0,0,1,1; texcoordvelocity,0.03,.03 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index+1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(-250):y(370):z(-100):customtexturerect(0,0,1,1):texcoordvelocity(0.03,.03)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index+1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,250; y,-410; z,-050; customtexturerect,0,0,1,1; texcoordvelocity,0.03,.01 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index+1); diffusealpha, 0.3),
+				InitCommand=function(self)
+					self:zoom(1.3):x(250):y(-410):z(-050):customtexturerect(0,0,1,1):texcoordvelocity(0.03,.01)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index+1)):diffusealpha(0.3)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,-300; y,450; z,-000; customtexturerect,0,0,1,1; texcoordvelocity,0.03,.01 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index-1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(-300):y(450):z(-000):customtexturerect(0,0,1,1):texcoordvelocity(0.03,.01)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index-1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,300; y,-490; z,-100; customtexturerect,0,0,1,1; texcoordvelocity,0.03,.01 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index+1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(300):y(-490):z(-100):customtexturerect(0,0,1,1):texcoordvelocity(0.03,.01)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index+1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,-350; y,530; z,-100; customtexturerect,0,0,1,1; texcoordvelocity,0.03,.02 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index+1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(-350):y(530):z(-100):customtexturerect(0,0,1,1):texcoordvelocity(0.03,.02)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index+1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,350; y,-570; z,-000; customtexturerect,0,0,1,1; texcoordvelocity,0.03,.01 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index-1); diffusealpha, 0.3),
+				InitCommand=function(self)
+					self:zoom(1.3):x(350):y(-570):z(-000):customtexturerect(0,0,1,1):texcoordvelocity(0.03,.01)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index-1)):diffusealpha(0.3)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,-400; y,610; z,-200; customtexturerect,0,0,1,1; texcoordvelocity,0.04,.03 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index+1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(-400):y(610):z(-200):customtexturerect(0,0,1,1):texcoordvelocity(0.04,.03)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index+1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,400; y,-650; z,-100; customtexturerect,0,0,1,1; texcoordvelocity,0.03,.02 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index+1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(400):y(-650):z(-100):customtexturerect(0,0,1,1):texcoordvelocity(0.03,.02)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index+1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,-450; y,690; z,-100; customtexturerect,0,0,1,1; texcoordvelocity,0.02,.04 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index+1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(-450):y(690):z(-100):customtexturerect(0,0,1,1):texcoordvelocity(0.02,.04)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index+1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,450; y,-730; z,-200; customtexturerect,0,0,1,1; texcoordvelocity,0.03,.02 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index-1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(450):y(-730):z(-200):customtexturerect(0,0,1,1):texcoordvelocity(0.03,.02)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index-1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,-500; y,770; z,-200; customtexturerect,0,0,1,1; texcoordvelocity,0.06,.01 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index+1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(-500):y(770):z(-200):customtexturerect(0,0,1,1):texcoordvelocity(0.06,.01)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index+1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,500; y,-810; z,-100; customtexturerect,0,0,1,1; texcoordvelocity,0.04,.01 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index-1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(500):y(-810):z(-100):customtexturerect(0,0,1,1):texcoordvelocity(0.04,.01)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index-1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,-550; y,850; z,-070; customtexturerect,0,0,1,1; texcoordvelocity,0.03,.02 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index-1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(-550):y(850):z(-070):customtexturerect(0,0,1,1):texcoordvelocity(0.03,.02)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index-1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,550; y,-890; z,-200; customtexturerect,0,0,1,1; texcoordvelocity,0.02,.03 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index-1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(550):y(-890):z(-200):customtexturerect(0,0,1,1):texcoordvelocity(0.02,.03)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index-1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,-600; y,930; z,-100; customtexturerect,0,0,1,1; texcoordvelocity,0.06,.02 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index-1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(-600):y(930):z(-100):customtexturerect(0,0,1,1):texcoordvelocity(0.06,.02)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index-1)):diffusealpha(0.2)
+				end,
 			},
 
 			Def.Sprite{
 				Texture=file,
-				InitCommand=cmd(zoom, 1.3; x,600; y,-970; z,-100; customtexturerect,0,0,1,1; texcoordvelocity,0.04,.04 ),
-				NewColorCommand=cmd(linear, delay; diffuse, GetHexColor(index+1); diffusealpha, 0.2 ),
+				InitCommand=function(self)
+					self:zoom(1.3):x(600):y(-970):z(-100):customtexturerect(0,0,1,1):texcoordvelocity(0.04,.04)
+				end,
+				NewColorCommand=function(self)
+					self:linear(delay):diffuse(GetHexColor(index+1)):diffusealpha(0.2)
+				end,
 			}
 		}
 	}

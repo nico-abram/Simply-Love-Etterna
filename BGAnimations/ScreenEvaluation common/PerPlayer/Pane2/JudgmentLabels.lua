@@ -17,7 +17,9 @@ end
 
 
 local t = Def.ActorFrame{
-	InitCommand=cmd(xy, 50, _screen.cy-24),
+	InitCommand=function(self)
+		self:xy(50, _screen.cy-24)
+	end,
 	OnCommand=function(self)
 		if player == PLAYER_2 then
 			self:x( self:GetX() * -1)
@@ -30,7 +32,9 @@ local t = Def.ActorFrame{
 for index, label in ipairs(TNSNames) do
 	t[#t+1] = LoadFont("_miso")..{
 		Text=label:upper(),
-		InitCommand=cmd(zoom,0.775; horizalign,right ),
+		InitCommand=function(self)
+			self:zoom(0.775):horizalign(right)
+		end,
 		BeginCommand=function(self)
 			self:x( (player == PLAYER_1 and -130) or -28 )
 			self:y((index-1)*24 + 8)

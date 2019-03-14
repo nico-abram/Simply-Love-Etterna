@@ -112,7 +112,9 @@ local t = Def.ActorFrame {
 			end
 
 		end,
-		ResetCommand=cmd(finishtweening; stopeffect; visible,false)
+		ResetCommand=function(self)
+			self:finishtweening(): stopeffect():visible(false)
+		end
 	}
 }
 

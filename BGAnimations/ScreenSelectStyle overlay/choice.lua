@@ -12,7 +12,9 @@ local drawNinePanelPad = function(color, xoffset)
 
 	return Def.ActorFrame {
 
-		InitCommand=cmd(x, xoffset; y, -yshift),
+		InitCommand=function(self)
+			self:x(xoffset):y(-yshift)
+		end,
 
 		-- first row
 		LoadActor("rounded-square.png")..{
@@ -192,7 +194,9 @@ local af = Def.ActorFrame{
 -- draw as many pads as needed for this choice
 for pad in ivalues(pads) do
 	af[#af+1] = drawNinePanelPad(pad[1], pad[2])..{
-		OffCommand=cmd(linear,0.2; diffusealpha,0)
+		OffCommand=function(self)
+			self:linear(0.2):diffusealpha(0)
+		end
 	}
 end
 
