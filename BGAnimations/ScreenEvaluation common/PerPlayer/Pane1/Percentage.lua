@@ -15,13 +15,19 @@ return Def.ActorFrame{
 
 	-- dark background quad behind player percent score
 	Def.Quad{
-		InitCommand=cmd(diffuse, color("#101519"); zoomto, 160,60 )
+		InitCommand=function(self)
+			self:diffuse(color("#101519")):zoomto(160,60)
+		end
 	},
 
 	LoadFont("_wendy white")..{
 		Text=percent,
 		Name="Percent",
-		InitCommand=cmd(vertalign, middle; horizalign, right; zoom,0.585 ),
-		OnCommand=cmd(x, 70)
+		InitCommand=function(self)
+			self:vertalign(middle):horizalign(right):zoom(0.585)
+		end,
+		OnCommand=function(self)
+			self:x(70)
+		end
 	}
 }

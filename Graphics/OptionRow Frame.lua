@@ -3,13 +3,17 @@ local t = Def.ActorFrame{}
 -- a row
 t[#t+1] = Def.Quad {
 	Name="RowBackgroundQuad",
-	OnCommand=cmd(zoomto,_screen.w*0.85,_screen.h*0.0625;);
+	OnCommand=function(self)
+		self:zoomto(_screen.w*0.85,_screen.h*0.0625)
+	end;
 }
 
 -- black quad behind the title
 t[#t+1] = Def.Quad {
 	Name="TitleBackgroundQuad",
-	OnCommand=cmd(halign, 0; x, -_screen.cx/1.1775; zoomto,_screen.w*WideScale(0.18,0.15),_screen.h*0.0625; diffuse, Color.Black; diffusealpha, BrighterOptionRows() and 0.8 or 0.25);
+	OnCommand=function(self)
+		self:halign(0):x(-_screen.cx/1.1775):zoomto(_screen.w*WideScale(0.18,0.15),_screen.h*0.0625):diffuse(Color.Black):diffusealpha(BrighterOptionRows() and 0.8 or 0.25)
+	end;
 }
 
 -- This feels pretty hackish.

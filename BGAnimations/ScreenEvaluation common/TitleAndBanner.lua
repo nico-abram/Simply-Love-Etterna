@@ -4,12 +4,16 @@ local af = Def.ActorFrame{
 
 	-- quad behind the song/course title text
 	Def.Quad{
-		InitCommand=cmd(diffuse,color("#1E282F"); xy,_screen.cx, 54.5; zoomto, 292.5,20),
+		InitCommand=function(self)
+			self:diffuse(color("#1E282F")):xy(_screen.cx, 54.5):zoomto(292.5,20)
+		end,
 	},
 
 	-- song/course title text
 	LoadFont("_miso")..{
-		InitCommand=cmd(xy,_screen.cx,54; maxwidth, 294 ),
+		InitCommand=function(self)
+			self:xy(_screen.cx,54):maxwidth(294)
+		end,
 		OnCommand=function(self)
 			local songBPMString = ""
 			local bpms
@@ -53,7 +57,9 @@ if SongOrCourse and SongOrCourse:HasBanner() then
 				self:LoadFromSong( GAMESTATE:GetCurrentSong() )
 			end
 		end,
-		OnCommand=cmd(xy, _screen.cx, 121.5; setsize,418,164; zoom, 0.7 )
+		OnCommand=function(self)
+			self:xy(_screen.cx, 121.5):setsize(418,164):zoom(0.7)
+		end
 	}
 else
 	--fallback banner

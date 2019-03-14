@@ -1,5 +1,7 @@
 return Def.ActorFrame{
-	InitCommand=cmd(x, 26),
+	InitCommand=function(self)
+		self:x(26)
+	end,
 
 	Def.Quad{
 		InitCommand=function(self) self:diffuse(color("#000a11")):zoomto(_screen.w/2.1675, _screen.h/15):diffusealpha(0.5) end

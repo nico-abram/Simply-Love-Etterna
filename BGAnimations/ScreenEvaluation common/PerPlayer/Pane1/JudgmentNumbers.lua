@@ -18,7 +18,9 @@ local RadarCategories = {
 
 
 local t = Def.ActorFrame{
-	InitCommand=cmd(zoom, 0.8; xy,90,_screen.cy-24),
+	InitCommand=function(self)
+		self:zoom(0.8):xy(90,_screen.cy-24)
+	end,
 	OnCommand=function(self)
 		-- shift the x position of this ActorFrame to -90 for PLAYER_2
 		if player == PLAYER_2 then
@@ -86,7 +88,9 @@ for index, RCType in ipairs(RadarCategories.Types) do
 	-- player performace value
 	t[#t+1] = Def.RollingNumbers{
 		Font="_ScreenEvaluation numbers",
-		InitCommand=cmd(zoom,0.5; horizalign, right; Load, "RollingNumbersEvaluationB"),
+		InitCommand=function(self)
+			self:zoom(0.5):horizalign(right):Load("RollingNumbersEvaluationB")
+		end,
 		BeginCommand=function(self)
 			self:y((index-1)*35 + 53)
 			self:x( RadarCategories.x[pn] )
@@ -97,7 +101,9 @@ for index, RCType in ipairs(RadarCategories.Types) do
 	--  slash
 	t[#t+1] = LoadFont("_miso")..{
 		Text="/",
-		InitCommand=cmd(diffuse,color("#5A6166"); zoom, 1.25; horizalign, right),
+		InitCommand=function(self)
+			self:diffuse(color("#5A6166")):zoom(1.25):horizalign(right)
+		end,
 		BeginCommand=function(self)
 			self:y((index-1)*35 + 53)
 			self:x( ((player == PLAYER_1) and -168) or 230 )
@@ -106,7 +112,9 @@ for index, RCType in ipairs(RadarCategories.Types) do
 
 	-- possible value
 	t[#t+1] = LoadFont("_ScreenEvaluation numbers")..{
-		InitCommand=cmd(zoom,0.5; horizalign, right),
+		InitCommand=function(self)
+			self:zoom(0.5):horizalign(right)
+		end,
 		BeginCommand=function(self)
 			self:y((index-1)*35 + 53)
 			self:x( ((player == PLAYER_1) and -114) or 286 )

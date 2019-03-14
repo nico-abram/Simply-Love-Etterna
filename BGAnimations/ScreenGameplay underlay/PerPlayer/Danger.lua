@@ -60,10 +60,18 @@ if SL.Global.GameMode ~= "Casual" and SL.Global.GameMode ~= "StomperZ" then
 					end
 				end
 			end,
-			DangerCommand=cmd(linear,0.3; diffusealpha,0.7; diffuseshift; effectcolor1,color("1,0,0.24,0.3"); effectcolor2,color("1,0,0,0.8")),
-			DeadCommand=cmd(diffusealpha,0; stopeffect; stoptweening; diffuse,color("1,0,0"); linear,0.3; diffusealpha,0.8; linear,0.3; diffusealpha,0),
-			OutOfDangerCommand=cmd(diffusealpha,0; stopeffect; stoptweening; diffuse,color("0,1,0"); linear,0.3; diffusealpha,0.8; linear,0.3; diffusealpha,0),
-			HideCommand=cmd(stopeffect; stoptweening; linear,0.3; diffusealpha,0)
+			DangerCommand=function(self)
+				self:linear(0.3):diffusealpha(0.7): diffuseshift():effectcolor1(color("1,0,0.24,0.3")):effectcolor2(color("1,0,0,0.8"))
+			end,
+			DeadCommand=function(self)
+				self:diffusealpha(0): stopeffect(): stoptweening():diffuse(color("1,0,0")):linear(0.3):diffusealpha(0.8):linear(0.3):diffusealpha(0)
+			end,
+			OutOfDangerCommand=function(self)
+				self:diffusealpha(0): stopeffect(): stoptweening():diffuse(color("0,1,0")):linear(0.3):diffusealpha(0.8):linear(0.3):diffusealpha(0)
+			end,
+			HideCommand=function(self)
+				self:stopeffect(): stoptweening():linear(0.3):diffusealpha(0)
+			end
 		}
 
 		return danger

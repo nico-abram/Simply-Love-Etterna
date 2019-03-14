@@ -27,7 +27,9 @@ return Def.ActorFrame{
 
 	-- colored square as the background for the difficulty meter
 	Def.Quad{
-		InitCommand=cmd(zoomto,30,30),
+		InitCommand=function(self)
+			self:zoomto(30,30)
+		end,
 		OnCommand=function(self)
 			self:y( _screen.cy-71 )
 			self:x( (player == PLAYER_1 and -134.5) or 134.5 )
@@ -42,7 +44,9 @@ return Def.ActorFrame{
 
 	-- numerical difficulty meter
 	LoadFont("_wendy small")..{
-		InitCommand=cmd(diffuse, Color.Black ),
+		InitCommand=function(self)
+			self:diffuse(Color.Black)
+		end,
 		OnCommand=function(self)
 			self:zoom( 0.4 )
 			self:y( _screen.cy-71 )

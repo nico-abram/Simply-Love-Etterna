@@ -15,15 +15,21 @@ end
 
 
 return Def.ActorFrame {
-	InitCommand=cmd(queuecommand,"Capture");
+	InitCommand=function(self)
+		self:queuecommand("Capture")
+	end;
 	CaptureCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(input)
 	end;
-	OffCommand=cmd(sleep,0.4);
+	OffCommand=function(self)
+		self:sleep(0.4)
+	end;
 	
 	Def.DeviceList {
 		Font=THEME:GetPathF("","_miso");
-		InitCommand=cmd(xy,_screen.cx,_screen.h-60; zoom,0.8; NoStroke);	
+		InitCommand=function(self)
+			self:xy(_screen.cx,_screen.h-60):zoom(0.8): NoStroke()
+		end;
 	};
 		
 	LoadActor("visuals");

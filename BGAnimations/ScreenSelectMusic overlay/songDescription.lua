@@ -7,12 +7,24 @@ local t = Def.ActorFrame{
 	-- ----------------------------------------
 	-- Actorframe for Artist, BPM, and Song length
 	Def.ActorFrame{
-		CurrentSongChangedMessageCommand=cmd(playcommand,"Set"),
-		CurrentCourseChangedMessageCommand=cmd(playcommand,"Set"),
-		CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Set"),
-		CurrentTrailP1ChangedMessageCommand=cmd(playcommand,"Set"),
-		CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Set"),
-		CurrentTrailP2ChangedMessageCommand=cmd(playcommand,"Set"),
+		CurrentSongChangedMessageCommand=function(self)
+			self:playcommand("Set")
+		end,
+		CurrentCourseChangedMessageCommand=function(self)
+			self:playcommand("Set")
+		end,
+		CurrentStepsP1ChangedMessageCommand=function(self)
+			self:playcommand("Set")
+		end,
+		CurrentTrailP1ChangedMessageCommand=function(self)
+			self:playcommand("Set")
+		end,
+		CurrentStepsP2ChangedMessageCommand=function(self)
+			self:playcommand("Set")
+		end,
+		CurrentTrailP2ChangedMessageCommand=function(self)
+			self:playcommand("Set")
+		end,
 
 		-- background for Artist, BPM, and Song Length
 		Def.Quad{
@@ -28,7 +40,9 @@ local t = Def.ActorFrame{
 
 		Def.ActorFrame{
 
-			InitCommand=cmd(x, -110),
+			InitCommand=function(self)
+				self:x(-110)
+			end,
 
 			-- Artist Label
 			LoadFont("_miso")..{
@@ -43,7 +57,9 @@ local t = Def.ActorFrame{
 
 			-- Song Artist
 			LoadFont("_miso")..{
-				InitCommand=cmd(horizalign,left; xy, 5,-12; maxwidth,WideScale(225,260) ),
+				InitCommand=function(self)
+					self:horizalign(left):xy(5,-12):maxwidth(WideScale(225,260))
+				end,
 				SetCommand=function(self)
 					if GAMESTATE:IsCourseMode() then
 						local course = GAMESTATE:GetCurrentCourse()
@@ -76,7 +92,9 @@ local t = Def.ActorFrame{
 
 			-- BPM value
 			LoadFont("_miso")..{
-				InitCommand=cmd(horizalign, left; y, 8; x, 5; diffuse, color("1,1,1,1")),
+				InitCommand=function(self)
+					self:horizalign(left):y(8):x(5):diffuse(color("1,1,1,1"))
+				end,
 				SetCommand=function(self)
 					--defined in ./Scipts/SL-CustomSpeedMods.lua
 					local text = GetDisplayBPMs()
@@ -96,7 +114,9 @@ local t = Def.ActorFrame{
 
 			-- Song Length Value
 			LoadFont("_miso")..{
-				InitCommand=cmd(horizalign, left; y, 8; x, _screen.w/4.5 + 5),
+				InitCommand=function(self)
+					self:horizalign(left):y(8):x(_screen.w/4.5 + 5)
+				end,
 				SetCommand=function(self)
 					local duration
 
@@ -160,7 +180,9 @@ local t = Def.ActorFrame{
 			},
 
 			LoadFont("_miso")..{
-				InitCommand=cmd(diffuse, Color.Black; zoom,0.8; y, 34),
+				InitCommand=function(self)
+					self:diffuse(Color.Black):zoom(0.8):y(34)
+				end,
 				SetCommand=function(self)
 					local song = GAMESTATE:GetCurrentSong()
 					local text = ""

@@ -100,24 +100,36 @@ t[#t+1] = Def.ActorFrame {
 
 	--fallback banner
 	LoadActor( THEME:GetPathB("ScreenSelectMusic", "overlay/colored_banners/".. (banner_directory[ThemePrefs.Get("VisualTheme")] or "Hearts") .."/banner"..SL.Global.ActiveColorIndex.." (doubleres).png"))..{
-		OnCommand=cmd(xy, _screen.cx, 121.5; zoom, 0.7)
+		OnCommand=function(self)
+			self:xy(_screen.cx, 121.5):zoom(0.7)
+		end
 	},
 
 	Def.Quad{
 		Name="LeftMask";
-		InitCommand=cmd(halign,0),
-		OnCommand=cmd(xy, 0, _screen.cy; zoomto, _screen.cx-272, _screen.h; MaskSource)
+		InitCommand=function(self)
+			self:halign(0)
+		end,
+		OnCommand=function(self)
+			self:xy(0, _screen.cy):zoomto(_screen.cx-272, _screen.h): MaskSource()
+		end
 	},
 
 	Def.Quad{
 		Name="CenterMask",
-		OnCommand=cmd(Center; zoomto, 110, _screen.h; MaskSource)
+		OnCommand=function(self)
+			self:Center():zoomto(110, _screen.h): MaskSource()
+		end
 	},
 
 	Def.Quad{
 		Name="RightMask",
-		InitCommand=cmd(halign,1),
-		OnCommand=cmd(xy, _screen.w, _screen.cy; zoomto, _screen.cx-272, _screen.h; MaskSource)
+		InitCommand=function(self)
+			self:halign(1)
+		end,
+		OnCommand=function(self)
+			self:xy(_screen.w, _screen.cy):zoomto(_screen.cx-272, _screen.h): MaskSource()
+		end
 	}
 }
 
@@ -149,7 +161,9 @@ for i=1,NumStages do
 	-- song name
 	SongNameAndBanner[#SongNameAndBanner+1] = LoadFont("_miso")..{
 		Name="SongName"..i,
-		InitCommand=cmd(xy, _screen.cx, 54; maxwidth, 294),
+		InitCommand=function(self)
+			self:xy(_screen.cx, 54):maxwidth(294)
+		end,
 		OnCommand=function(self)
 			if SongOrCourse then
 				self:settext( GAMESTATE:IsCourseMode() and SongOrCourse:GetDisplayFullTitle() or SongOrCourse:GetDisplayMainTitle() )
@@ -160,7 +174,9 @@ for i=1,NumStages do
 	-- song banner
 	SongNameAndBanner[#SongNameAndBanner+1] = Def.Banner{
 		Name="SongBanner"..i,
-		InitCommand=cmd(xy, _screen.cx, 121.5),
+		InitCommand=function(self)
+			self:xy(_screen.cx, 121.5)
+		end,
 		OnCommand=function(self)
 			if SongOrCourse then
 				if GAMESTATE:IsCourseMode() then

@@ -16,7 +16,9 @@ end
 
 return LoadFont("_miso")..{
 	Text=stepartist,
-	InitCommand=cmd(zoom, 0.7; xy, 115,_screen.cy-80 ),
+	InitCommand=function(self)
+		self:zoom(0.7):xy(115,_screen.cy-80)
+	end,
 	OnCommand=function(self)
 		if player == PLAYER_1 then
 			self:x( self:GetX() * -1 )

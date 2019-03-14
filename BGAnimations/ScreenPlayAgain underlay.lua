@@ -167,12 +167,16 @@ local t = Def.ActorFrame{
 
 	-- slightly darken the entire screen
 	Def.Quad {
-		InitCommand=cmd(FullScreen; diffuse,Color.Black; diffusealpha,0.6)
+		InitCommand=function(self)
+			self:FullScreen():diffuse(Color.Black):diffusealpha(0.6)
+		end
 	},
 
 	LoadFont("_wendy small")..{
 		Text=THEME:GetString("ScreenPlayAgain", "Continue"),
-		InitCommand=cmd(xy, _screen.cx, _screen.cy-30),
+		InitCommand=function(self)
+			self:xy(_screen.cx, _screen.cy-30)
+		end,
 	},
 
 	choice_wheel:create_actors( "sort_wheel", #choices, wheel_item_mt, _screen.cx, _screen.cy+50 ),

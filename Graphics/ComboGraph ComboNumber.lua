@@ -4,5 +4,7 @@ if SL.Global.ActiveColorIndex > 5 then
 end
 
 return LoadFont("_miso") .. {
-	InitCommand=cmd(zoom, 0.65; diffuse,color(textcolor););
+	InitCommand=function(self)
+		self:zoom(0.65):diffuse(color(textcolor))
+	end;
 };

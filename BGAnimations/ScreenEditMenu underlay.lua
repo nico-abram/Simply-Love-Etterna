@@ -14,11 +14,17 @@ local rowYvalues = {};
 
 
 local t = Def.ActorFrame{
-	InitCommand=cmd(diffusealpha,0);
-	OnCommand=cmd(linear,0.15; diffusealpha,1; queuecommand, "Hax");
+	InitCommand=function(self)
+		self:diffusealpha(0)
+	end;
+	OnCommand=function(self)
+		self:linear(0.15):diffusealpha(1):queuecommand("Hax")
+	end;
 	--playcommand seems more responsive than queuecommand, so use it here
 	--or else we see a frame or two where the cursor color hasn't been applied yet (HAX)
-	EditMenuChangeMessageCommand=cmd(playcommand, "Hax");
+	EditMenuChangeMessageCommand=function(self)
+		self:playcommand("Hax")
+	end;
 	HaxCommand=function(self)
 
 		local topscreen = SCREENMAN:GetTopScreen();
@@ -113,8 +119,12 @@ local t = Def.ActorFrame{
 
 -- the overall BG
 t[#t+1] = Def.Quad {
-	InitCommand=cmd(zoomto,_screen.w*0.9,_screen.h*0.725; diffuse,Color.Black),
-	OnCommand=cmd(xy,_screen.cx,_screen.cy)
+	InitCommand=function(self)
+		self:zoomto(_screen.w*0.9,_screen.h*0.725):diffuse(Color.Black)
+	end,
+	OnCommand=function(self)
+		self:xy(_screen.cx,_screen.cy)
+	end
 }
 
 
@@ -122,8 +132,12 @@ t[#t+1] = Def.Quad {
 for i=1,7 do
 	-- a row
 	t[#t+1] = Def.Quad {
-		InitCommand=cmd(zoomto,_screen.w*0.745, _screen.h*0.0885; diffuse,color("#071016")),
-		OnCommand=cmd(xy, _screen.cx + WideScale(49,65), 40 + (i*45))
+		InitCommand=function(self)
+			self:zoomto(_screen.w*0.745, _screen.h*0.0885):diffuse(color("#071016"))
+		end,
+		OnCommand=function(self)
+			self:xy(_screen.cx + WideScale(49,65), 40 + (i*45))
+		end
 	}
 
 	-- fill our table with each row's Y value from the Metrics
@@ -133,24 +147,34 @@ end
 
 -- the grey BG for row labels
 t[#t+1] = Def.Quad {
-	InitCommand = cmd(Center;zoomto,_screen.w*0.15,_screen.h*0.725;diffuse,color("#212831"); x, _screen.cx-WideScale(240,320))
+	InitCommand = function(self)
+		self:Center():zoomto(_screen.w*0.15,_screen.h*0.725):diffuse(color("#212831")):x(_screen.cx-WideScale(240,320))
+	end
 }
 
 -- the grey BG for the instructions at the bottom
 t[#t+1] = Def.Quad {
-	InitCommand=cmd(zoomto,_screen.w*0.745,_screen.h*0.0725; diffuse,color("#212831")),
-	OnCommand=cmd(xy, _screen.cx + WideScale(49,65), 396)
+	InitCommand=function(self)
+		self:zoomto(_screen.w*0.745,_screen.h*0.0725):diffuse(color("#212831"))
+	end,
+	OnCommand=function(self)
+		self:xy(_screen.cx + WideScale(49,65), 396)
+	end
 }
 
 t[#t+1] = Def.Quad {
 	Name="RowHighlight",
-	OnCommand=cmd(x, _screen.cx; setsize, _screen.w*0.9 - 4,_screen.h*0.088)
+	OnCommand=function(self)
+		self:x(_screen.cx):setsize(_screen.w*0.9 - 4,_screen.h*0.088)
+	end
 }
 
 
 -- white border
 t[#t+1] = Border(_screen.w*0.9, _screen.h*0.734, 2) .. {
-	InitCommand = cmd(xy,_screen.cx, _screen.cy),
+	InitCommand = function(self)
+		self:xy(_screen.cx, _screen.cy)
+	end,
 }
 
 return t

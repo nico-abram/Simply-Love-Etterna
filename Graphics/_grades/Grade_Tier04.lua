@@ -1,6 +1,8 @@
 local pss = ...
 
 return Def.ActorFrame{
-	OnCommand=cmd(zoom,0.8;pulse;effectmagnitude,1,0.9,0);
+	OnCommand=function(self)
+		self:zoom(0.8):pulse():effectmagnitude(1,0.9,0)
+	end;
 	LoadActor("star.lua", pss);
 };
