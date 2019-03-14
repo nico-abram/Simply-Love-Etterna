@@ -2,7 +2,9 @@ local args = ...
 local af = args.af
 local num_panes = args.num_panes
 
-if not af then return end
+if not af then
+	return
+end
 
 local panes, active_pane = {}, {}
 
@@ -13,13 +15,26 @@ for player in ivalues(GAMESTATE:GetHumanPlayers()) do
 	panes[pn] = {}
 	active_pane[pn] = num_panes
 
-	for i=1,num_panes do
-		table.insert(panes[pn], af:GetChild(pn.."_AF_Lower"):GetChild("Pane"..i))
+	function dump(o)
+		if type(o) == "table" then
+			local s = "{ "
+			for k, v in pairs(o) do
+				if type(k) ~= "number" then
+					k = '"' .. k .. '"'
+				end
+				s = s .. "[" .. k .. "] = " .. dump(v) .. ","
+			end
+			return s .. "} "
+		else
+			return tostring(o)
+		end
+	end
+	for i = 1, num_panes do
+		table.insert(panes[pn], af:GetChild(pn .. "_AF_Lower"):GetChild("Pane" .. i))
 	end
 end
 
 return function(event)
-
 	if not event.PlayerNumber or not event.button then
 		return false
 	end
@@ -27,7 +42,6 @@ return function(event)
 	local pn = ToEnumShortString(event.PlayerNumber)
 
 	if event.type == "InputEventType_FirstPress" and panes[pn] then
-
 		if event.GameButton == "MenuRight" or event.GameButton == "MenuLeft" then
 			if event.GameButton == "MenuRight" then
 				active_pane[pn] = ((active_pane[pn] + 1) % num_panes)
@@ -35,9 +49,8 @@ return function(event)
 				active_pane[pn] = ((active_pane[pn] - 1) % num_panes)
 			end
 
-			for i=1,num_panes do
-
-				if style == "OnePlayerTwoSides" and active_pane[pn]+1 == 2 then
+			for i = 1, num_panes do
+				if style == "OnePlayerTwoSides" and active_pane[pn] + 1 == 2 then
 					af:queuecommand("Expand")
 				else
 					af:queuecommand("Shrink")
@@ -45,7 +58,7 @@ return function(event)
 
 				panes[pn][i]:visible(false)
 			end
-			panes[pn][active_pane[pn]+1]:visible(true)
+			panes[pn][active_pane[pn] + 1]:visible(true)
 		end
 	end
 

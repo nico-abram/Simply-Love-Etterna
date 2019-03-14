@@ -2,6 +2,12 @@
 if not GAMESTATE.GetEtternaVersion then
 	return
 end
+
+--[[ 
+    Hook ourselves into LogDisplay
+    This is a uper ugly hack to execute code once singletons are finished getting created
+    to use another ugly hack to add lua functions to a singleton as methods
+--]]
 --[[
 	thing: userdata or table
 ]]
@@ -10,26 +16,37 @@ local function addIdxMt(thing, _index)
 	local f = mt.__index
 	if type(f) == "table" then
 		mt.__index = function(t, k)
-			if SCREENMAN and SCREENMAN.SystemMessage then
-				SCREENMAN:SystemMessage(k)
-			end
 			return f[k] or _index[k]
 		end
 	else
 		mt.__index = function(t, k)
+			--[[
 			if SCREENMAN and SCREENMAN.SystemMessage then
 				SCREENMAN:SystemMessage(k)
 			end
+			--]]
 			return f(t, k) or _index[k]
 		end
 	end
 end
-
---[[ 
-	Hook ourselves into LogDisplay
-	This is a uper ugly hack to execute code once singletons are finished getting created
-	to use another ugly hack to add lua functions to a singleton as methods
---]]
+local function addIdxMtPrioritizing(thing, _index)
+	local mt = debug.getmetatable(thing)
+	local f = mt.__index
+	if type(f) == "table" then
+		mt.__index = function(t, k)
+			return _index[k] or f[k]
+		end
+	else
+		mt.__index = function(t, k)
+			--[[
+			if SCREENMAN and SCREENMAN.SystemMessage then
+				SCREENMAN:SystemMessage(k)
+			end
+			--]]
+			return _index[k] or f(t, k)
+		end
+	end
+end
 do
 	local original = Def.LogDisplay
 	Def.LogDisplay = function(...)
@@ -37,8 +54,47 @@ do
 		return Def.ActorFrame {
 			x,
 			InitCommand = function()
+				local removedPrefs = {
+					["AutogenGroupCourses"] = false,
+					["SongsPerPlay"] = 1000,
+					["HarshHotLifePenalty"] = 0,
+					["Premium"] = "On",
+					["MaxHighScoresPerListForMachine"] = 5
+				}
+				local setpref = PREFSMAN.SetPreference
+				local getpref = PREFSMAN.GetPreference
+				addIdxMtPrioritizing(
+					PREFSMAN,
+					{
+						GetPreference = function(_, k)
+							local v = removedPrefs[k]
+							if v ~= nil then
+								return v
+							else
+								return getpref(PREFSMAN, k)
+							end
+						end,
+						SetPreference = function(_, k, v)
+							local v = removedPrefs[k]
+							if v == nil then
+								setpref(PREFSMAN, k, v)
+							end
+						end
+					}
+				)
 				addIdxMt(
 					GAMESTATE,
+					{
+						IsCourseMode = function()
+							return false
+						end,
+						GetCurrentCourse = function()
+							return nil
+						end
+					}
+				)
+				addIdxMt(
+					SONGMAN,
 					{
 						GetAllCourses = function()
 							return {}
@@ -49,6 +105,9 @@ do
 		}
 	end
 end
+MEMCARDMAN = {GetCardState = function(Player)
+		return "MemoryCardState_none"
+	end}
 --- IniFile: basically a Lua rewrite of SM's IniFile class that serves as the
 -- basis for the sm-ssc UserPrefs and ThemePrefs configuration systems.
 -- Note that this is a namespace, not a class per se.

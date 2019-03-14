@@ -326,7 +326,7 @@ SL = {
 		}
 	},
 	TitleMenuChoices = function()
-		return SL.IsEtterna and "1,3,4" or "1,2,3,4"
+		return SL.IsEtterna and "1,Multi,3,4" or "1,2,3,4"
 	end
 }
 

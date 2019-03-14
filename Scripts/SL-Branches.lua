@@ -1,4 +1,6 @@
-if not Branch then Branch = {} end
+if not Branch then
+	Branch = {}
+end
 
 SelectMusicOrCourse = function()
 	if GAMESTATE:IsCourseMode() then
@@ -13,15 +15,12 @@ SelectMusicOrCourse = function()
 end
 
 Branch.AllowScreenNameEntry = function()
-
 	-- If we're in Casual mode, don't allow NameEntry, and don't
 	-- bother saving the profile(s). Skip directly to GameOver.
 	if SL.Global.GameMode == "Casual" then
 		return Branch.AfterProfileSaveSummary()
-
 	elseif ThemePrefs.Get("AllowScreenNameEntry") then
 		return "ScreenNameEntryTraditional"
-
 	else
 		return "ScreenProfileSaveSummary"
 	end
@@ -59,7 +58,7 @@ Branch.AfterScreenSelectColor = function()
 			GAMESTATE:JoinPlayer(PLAYER_1)
 			GAMESTATE:JoinPlayer(PLAYER_2)
 		end
-		GAMESTATE:SetCurrentStyle( preferred_style )
+		GAMESTATE:SetCurrentStyle(preferred_style)
 		-- set this here to be used later with the continue system
 		SL.Global.Gamestate.Style = preferred_style
 
@@ -82,14 +81,13 @@ Branch.AfterSelectPlayMode = function()
 	return SelectMusicOrCourse()
 end
 
-
 Branch.AfterGameplay = function()
 	if THEME:GetMetric("ScreenHeartEntry", "HeartEntryEnabled") then
-		local go_to_heart= false
+		local go_to_heart = false
 		for i, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
-			local profile= PROFILEMAN:GetProfile(pn)
+			local profile = PROFILEMAN:GetProfile(pn)
 			if profile and profile:GetIgnoreStepCountCalories() then
-				go_to_heart= true
+				go_to_heart = true
 			end
 		end
 
@@ -103,8 +101,12 @@ end
 
 Branch.AfterHeartEntry = function()
 	local pm = ToEnumShortString(GAMESTATE:GetPlayMode())
-	if( pm == "Regular" ) then return "ScreenEvaluationStage" end
-	if( pm == "Nonstop" ) then return "ScreenEvaluationNonstop" end
+	if (pm == "Regular") then
+		return "ScreenEvaluationStage"
+	end
+	if (pm == "Nonstop") then
+		return "ScreenEvaluationNonstop"
+	end
 end
 
 Branch.PlayerOptions = function()
@@ -116,7 +118,6 @@ Branch.PlayerOptions = function()
 end
 
 Branch.SSMCancel = function()
-
 	if GAMESTATE:GetCurrentStageIndex() > 0 then
 		return Branch.AllowScreenEvalSummary()
 	end
@@ -125,15 +126,11 @@ Branch.SSMCancel = function()
 end
 
 Branch.AfterProfileSave = function()
-
 	if PREFSMAN:GetPreference("EventMode") then
 		return SelectMusicOrCourse()
-
 	elseif GAMESTATE:IsCourseMode() then
 		return Branch.AllowScreenNameEntry()
-
 	else
-
 		-- deduct the number of stages that stock Stepmania says the song is
 		local song = GAMESTATE:GetCurrentSong()
 		local SMSongCost = (song:IsMarathon() and 3) or (song:IsLong() and 2) or 1
@@ -150,8 +147,8 @@ Branch.AfterProfileSave = function()
 			local LongCutoff = PREFSMAN:GetPreference("LongVerSongSeconds")
 			local MarathonCutoff = PREFSMAN:GetPreference("MarathonVerSongSeconds")
 
-			local IsMarathon = (DurationWithRate/MarathonCutoff > 1)
-			local IsLong     = (DurationWithRate/LongCutoff > 1)
+			local IsMarathon = (DurationWithRate / MarathonCutoff > 1)
+			local IsLong = (DurationWithRate / LongCutoff > 1)
 
 			ActualSongCost = (IsMarathon and 3) or (IsLong and 2) or 1
 			StagesToAddBack = SMSongCost - ActualSongCost
@@ -165,10 +162,11 @@ Branch.AfterProfileSave = function()
 		-- a) a Lua chart reloaded ScreenGameplay, or
 		-- b) everyone failed, and StepmMania zeroed out the stage numbers
 		if GAMESTATE:GetNumStagesLeft(GAMESTATE:GetMasterPlayerNumber()) < SL.Global.Stages.Remaining then
-			local StagesToAddBack = math.abs(SL.Global.Stages.Remaining - GAMESTATE:GetNumStagesLeft(GAMESTATE:GetMasterPlayerNumber()))
+			local StagesToAddBack =
+				math.abs(SL.Global.Stages.Remaining - GAMESTATE:GetNumStagesLeft(GAMESTATE:GetMasterPlayerNumber()))
 			local Players = GAMESTATE:GetHumanPlayers()
 			for pn in ivalues(Players) do
-				for i=1, StagesToAddBack do
+				for i = 1, StagesToAddBack do
 					GAMESTATE:AddStageToPlayer(pn)
 				end
 			end
@@ -208,5 +206,19 @@ Branch.AfterProfileSaveSummary = function()
 		return "ScreenGameOver"
 	else
 		return Branch.AfterInit()
+	end
+end
+
+if SL.IsEtterna then
+	Branch.MultiScreen = function()
+		if IsNetSMOnline() then
+			if not IsSMOnlineLoggedIn(PLAYER_1) then
+				return "ScreenNetSelectProfile"
+			else
+				return "ScreenNetSelectProfile" --return "ScreenNetRoom" 	-- cant do this, we need to select a local profile even
+			end -- if logged into smo -mina
+		else
+			return "ScreenNetworkOptions"
+		end
 	end
 end
