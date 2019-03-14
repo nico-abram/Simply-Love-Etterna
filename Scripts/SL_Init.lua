@@ -324,7 +324,10 @@ SL = {
 			LifePercentChangeHeld = 0,
 			LifePercentChangeHitMine = -0.04
 		}
-	}
+	},
+	TitleMenuChoices = function()
+		return SL.IsEtterna and "1,3,4" or "1,2,3,4"
+	end
 }
 
 -- Initialize preferences by calling this method.
