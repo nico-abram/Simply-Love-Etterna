@@ -2,6 +2,53 @@
 if not GAMESTATE.GetEtternaVersion then
 	return
 end
+--[[
+	thing: userdata or table
+]]
+local function addIdxMt(thing, _index)
+	local mt = debug.getmetatable(thing)
+	local f = mt.__index
+	if type(f) == "table" then
+		mt.__index = function(t, k)
+			if SCREENMAN and SCREENMAN.SystemMessage then
+				SCREENMAN:SystemMessage(k)
+			end
+			return f[k] or _index[k]
+		end
+	else
+		mt.__index = function(t, k)
+			if SCREENMAN and SCREENMAN.SystemMessage then
+				SCREENMAN:SystemMessage(k)
+			end
+			return f(t, k) or _index[k]
+		end
+	end
+end
+
+--[[ 
+	Hook ourselves into LogDisplay
+	This is a uper ugly hack to execute code once singletons are finished getting created
+	to use another ugly hack to add lua functions to a singleton as methods
+--]]
+do
+	local original = Def.LogDisplay
+	Def.LogDisplay = function(...)
+		local x = original(...)
+		return Def.ActorFrame {
+			x,
+			InitCommand = function()
+				addIdxMt(
+					GAMESTATE,
+					{
+						GetAllCourses = function()
+							return {}
+						end
+					}
+				)
+			end
+		}
+	end
+end
 --- IniFile: basically a Lua rewrite of SM's IniFile class that serves as the
 -- basis for the sm-ssc UserPrefs and ThemePrefs configuration systems.
 -- Note that this is a namespace, not a class per se.
