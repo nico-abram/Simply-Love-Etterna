@@ -59,7 +59,20 @@ do
 					["SongsPerPlay"] = 1000,
 					["HarshHotLifePenalty"] = 0,
 					["Premium"] = "On",
-					["MaxHighScoresPerListForMachine"] = 5
+					["MaxHighScoresPerListForMachine"] = 5,
+					["TimingWindowSecondsW4"] = 0,
+					["TimingWindowAdd"] = 0.000000,
+					["TimingWindowJump"] = 0.250000,
+					["TimingWindowScale"] = 1.000000,
+					["TimingWindowSecondsCheckpoint"] = 0.166400,
+					["TimingWindowSecondsHold"] = 0.320000,
+					["TimingWindowSecondsMine"] = 0.070000,
+					["TimingWindowSecondsRoll"] = 0.350000,
+					["TimingWindowSecondsW1"] = 0.021500,
+					["TimingWindowSecondsW2"] = 0.043000,
+					["TimingWindowSecondsW3"] = 0.102000,
+					["TimingWindowSecondsW4"] = 0.135000,
+					["TimingWindowSecondsW5"] = 0.180000
 				}
 				local setpref = PREFSMAN.SetPreference
 				local getpref = PREFSMAN.GetPreference
@@ -105,9 +118,11 @@ do
 		}
 	end
 end
-MEMCARDMAN = {GetCardState = function(Player)
+MEMCARDMAN = {
+	GetCardState = function(Player)
 		return "MemoryCardState_none"
-	end}
+	end
+}
 --- IniFile: basically a Lua rewrite of SM's IniFile class that serves as the
 -- basis for the sm-ssc UserPrefs and ThemePrefs configuration systems.
 -- Note that this is a namespace, not a class per se.

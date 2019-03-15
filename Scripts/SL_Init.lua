@@ -342,3 +342,75 @@ end
 
 -- TODO: remove this; it's for debugging purposes (Control+F2 to reload scripts) only
 InitializeSimplyLove()
+
+--[[
+    This is a probably not very good and probably innefficient profiler utility.
+    Basically add something like
+    BeginCommand = function(self) startProfiler() end
+    to an actor in a screen, and periodically the game will display a sorted table by trace executions
+]]
+function startProfiler(updateInterval, depth, usevmmode, tablePrinter, topN)
+	local profile = require("jit.profile")
+	local t = {}
+	depth = depth or 1
+	updateInterval = updateInterval or 1
+	profile.start(
+		"f",
+		usevmmode and function(th, samples, vmmode)
+				local f = require("jit.profile").dumpstack(th, "pl", depth)
+				if not t[f] then
+					t[f] = {}
+				end
+				t[f][vmmode] = (t[f][vmmode] or 0) + samples
+			end or function(th, samples, vmmode)
+				local f = require("jit.profile").dumpstack(th, "pl", depth)
+				t[f] = samples + (t[f] or 0)
+			end
+	)
+	tablePrinter = tablePrinter or function(o)
+			if type(o) == "table" then
+				local s = "{ "
+				for k, v in pairs(o) do
+					if type(k) ~= "number" then
+						k = '"' .. k .. '"'
+					end
+					s = s .. "[" .. k .. "] = " .. tablePrinter(v) .. ",\n"
+				end
+				return s .. "} "
+			else
+				return tostring(o)
+			end
+		end
+	local sum = function(t)
+		local s = 0
+		for _, v in pairs(t) do
+			s = s + v
+		end
+		return s
+	end
+	local sortF = usevmmode and function(a, b)
+			local aSum = sum(a[2])
+			local bSum = sum(b[2])
+			return aSum > bSum
+		end or function(a, b)
+			return a[2] > b[2]
+		end
+	SCREENMAN:GetTopScreen():setInterval(
+		function()
+			local tmp = {}
+			local n = 0
+			for k, v in pairs(t) do
+				tmp[n + 1] = {k, v}
+				n = n + 1
+			end
+			table.sort(tmp, sortF)
+			local str = ""
+			for i = 1, topN and math.min(#tmp, topN) or (#tmp) do
+				v = tmp[i]
+				str = str .. tablePrinter(v[1]) .. " =" .. tablePrinter(v[2]) .. "\n"
+			end
+			SCREENMAN:SystemMessage(str)
+		end,
+		updateInterval
+	)
+end

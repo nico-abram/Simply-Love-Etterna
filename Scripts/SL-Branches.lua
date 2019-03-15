@@ -17,7 +17,7 @@ end
 Branch.AllowScreenNameEntry = function()
 	-- If we're in Casual mode, don't allow NameEntry, and don't
 	-- bother saving the profile(s). Skip directly to GameOver.
-	if SL.Global.GameMode == "Casual" then
+	if SL.Global.GameMode == "Casual" or SL.IsEtterna then
 		return Branch.AfterProfileSaveSummary()
 	elseif ThemePrefs.Get("AllowScreenNameEntry") then
 		return "ScreenNameEntryTraditional"
@@ -52,13 +52,15 @@ end
 
 Branch.AfterScreenSelectColor = function()
 	local preferred_style = ThemePrefs.Get("AutoStyle")
-	if preferred_style ~= "none" then
+	if preferred_style ~= "none" or SL.IsEtterna then
 		-- If "versus" ensure that both players are actually considered joined.
 		if preferred_style == "versus" then
 			GAMESTATE:JoinPlayer(PLAYER_1)
 			GAMESTATE:JoinPlayer(PLAYER_2)
 		end
-		GAMESTATE:SetCurrentStyle(preferred_style)
+		if preferred_style and preferred_style ~= "none" then
+			GAMESTATE:SetCurrentStyle(preferred_style)
+		end
 		-- set this here to be used later with the continue system
 		SL.Global.Gamestate.Style = preferred_style
 
@@ -202,7 +204,7 @@ Branch.AfterProfileSave = function()
 end
 
 Branch.AfterProfileSaveSummary = function()
-	if ThemePrefs.Get("AllowScreenGameOver") then
+	if ThemePrefs.Get("AllowScreenGameOver") and not SL.IsEtterna then
 		return "ScreenGameOver"
 	else
 		return Branch.AfterInit()
