@@ -52,7 +52,9 @@ end
 
 Branch.AfterScreenSelectColor = function()
 	local preferred_style = ThemePrefs.Get("AutoStyle")
-	if preferred_style ~= "none" or SL.IsEtterna then
+	if SL.IsEtterna then
+		return "ScreenSelectMusic"
+	elseif preferred_style ~= "none" then
 		-- If "versus" ensure that both players are actually considered joined.
 		if preferred_style == "versus" then
 			GAMESTATE:JoinPlayer(PLAYER_1)
