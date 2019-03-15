@@ -15,20 +15,6 @@ for player in ivalues(GAMESTATE:GetHumanPlayers()) do
 	panes[pn] = {}
 	active_pane[pn] = num_panes
 
-	function dump(o)
-		if type(o) == "table" then
-			local s = "{ "
-			for k, v in pairs(o) do
-				if type(k) ~= "number" then
-					k = '"' .. k .. '"'
-				end
-				s = s .. "[" .. k .. "] = " .. dump(v) .. ","
-			end
-			return s .. "} "
-		else
-			return tostring(o)
-		end
-	end
 	for i = 1, num_panes do
 		table.insert(panes[pn], af:GetChild(pn .. "_AF_Lower"):GetChild("Pane" .. i))
 	end
