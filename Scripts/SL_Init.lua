@@ -63,7 +63,7 @@ local GlobalDefaults = {
 				Stats = {}
 			}
 			self.ScreenAfter = {
-				PlayAgain = "ScreenEvaluationSummary",
+				PlayAgain = SL.IsEtterna and "ScreenTitleMenu" or "ScreenEvaluationSummary",
 				PlayerOptions = "ScreenGameplay",
 				PlayerOptions2 = "ScreenGameplay"
 			}

@@ -28,7 +28,7 @@ end
 
 Branch.AllowScreenEvalSummary = function()
 	if ThemePrefs.Get("AllowScreenEvalSummary") then
-		return "ScreenEvaluationSummary"
+		return SL.IsEtterna and "ScreenTitleMenu" or "ScreenEvaluationSummary"
 	else
 		return Branch.AllowScreenNameEntry()
 	end
@@ -53,6 +53,7 @@ end
 Branch.AfterScreenSelectColor = function()
 	local preferred_style = ThemePrefs.Get("AutoStyle")
 	if SL.IsEtterna then
+		GAMESTATE:JoinPlayer(PLAYER_1)
 		return "ScreenSelectMusic"
 	elseif preferred_style ~= "none" then
 		-- If "versus" ensure that both players are actually considered joined.
@@ -207,7 +208,7 @@ end
 
 Branch.AfterProfileSaveSummary = function()
 	if SL.IsEtterna then
-		return "ScreenSaveProfile"
+		return "ScreenProfileSave"
 	elseif ThemePrefs.Get("AllowScreenGameOver") then
 		return "ScreenGameOver"
 	else
