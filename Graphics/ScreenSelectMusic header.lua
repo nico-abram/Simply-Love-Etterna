@@ -23,6 +23,10 @@ local t =
 			end
 
 			self:SetUpdateFunction(Update)
+			if SL.IsEtterna then
+				-- Slight optimization in etterna: Only update the second timer once a second
+				self:SetUpdateFunctionInterval(1)
+			end
 		end
 	end,
 	OffCommand = function(self)
