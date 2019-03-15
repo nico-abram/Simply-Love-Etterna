@@ -128,7 +128,7 @@ Branch.SSMCancel = function()
 end
 
 Branch.AfterProfileSave = function()
-	if PREFSMAN:GetPreference("EventMode") then
+	if PREFSMAN:GetPreference("EventMode") or SL.IsEtterna then
 		return SelectMusicOrCourse()
 	elseif GAMESTATE:IsCourseMode() then
 		return Branch.AllowScreenNameEntry()
@@ -204,7 +204,9 @@ Branch.AfterProfileSave = function()
 end
 
 Branch.AfterProfileSaveSummary = function()
-	if ThemePrefs.Get("AllowScreenGameOver") and not SL.IsEtterna then
+	if SL.IsEtterna then
+		return "ScreenSaveProfile"
+	elseif ThemePrefs.Get("AllowScreenGameOver") then
 		return "ScreenGameOver"
 	else
 		return Branch.AfterInit()
