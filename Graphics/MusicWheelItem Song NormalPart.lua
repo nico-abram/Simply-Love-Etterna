@@ -32,7 +32,6 @@ return Def.ActorFrame {
 				if b then
 					polled = true
 					local n = math.floor(my / h) - 7
-					SCREENMAN:SystemMessage(tostring(n))
 					local doot = self.wheel:MoveAndCheckType(n)
 					self.wheel:Move(0)
 					if n == 0 or doot == "WheelItemDataType_Section" then
