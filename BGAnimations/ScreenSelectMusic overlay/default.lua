@@ -76,11 +76,33 @@ if SL.IsEtterna then
 		Def.ActorFrame {
 		BeginCommand = function(self)
 			self:draworder(1)
-			mWheel = SCREENMAN:GetTopScreen():GetMusicWheel()
+			local top = SCREENMAN:GetTopScreen()
+			mWheel = top:GetMusicWheel()
 			searchActor = self
-			SCREENMAN:GetTopScreen():AddInputCallback(
+			top:AddInputCallback(
 				function(event)
-					if event.type == "InputEventType_Release" then
+					if event.type == "InputEventType_FirstPress" then
+						if event.DeviceInput.button == "DeviceButton_mousewheel up" then
+							self.moving = true
+							if pressingtab == true and not mWheel:IsSettled() then
+								mWheel:Move(-2)
+							else
+								mWheel:Move(-1)
+							end
+							mWheel:Move(0)
+						elseif event.DeviceInput.button == "DeviceButton_mousewheel down" then
+							self.moving = true
+							if pressingtab == true and not mWheel:IsSettled() then
+								mWheel:Move(2)
+							else
+								mWheel:Move(1)
+							end
+							mWheel:Move(0)
+						end
+					elseif self.moving == true then
+						mWheel:Move(0)
+						self.moving = false
+					elseif event.type == "InputEventType_Release" then
 						local key = event.DeviceInput.button:match("DeviceButton_(.+)")
 						if key == "f" and INPUTFILTER:IsShiftPressed() then
 							local active = not coverQuadActor:GetVisible()
