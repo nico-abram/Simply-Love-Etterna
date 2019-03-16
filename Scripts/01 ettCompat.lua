@@ -803,6 +803,7 @@ Widg.Button = function(params)
 		halign = params.font.halign,
 		color = params.font.color,
 		text = params.text,
+		name = params.font.name,
 		width = params.width - params.font.padding.x
 	}
 
@@ -1205,6 +1206,7 @@ Widg.defaults.textbox = {
 	cursorOffset = 0, -- <=0 (Ex. if it's -1 then cursor would be as|d (The |))
 	onValueChangeEnd = false, -- Called when esc or enter is pressed
 	onValueChange = false, -- Called on each change to the string
+	clearOnEsc = false, -- Set to empty string when ending input with escape
 	inputStartCondition = function()
 		return not SCREENMAN:get_input_redirected(PLAYER_1)
 	end
@@ -1291,7 +1293,13 @@ do
 			end
 			-- We want first press and repeat only
 			if event.type ~= "InputEventType_Release" then
-				if event.button == "Start" or event.button == "Back" then
+				if event.button == "Start" then
+					textbox:EndInput()
+					return true
+				elseif event.button == "Back" then
+					if params.clearOnEsc then
+						textbox:SetText("")
+					end
 					textbox:EndInput()
 					return true
 				elseif event.DeviceInput.button == "DeviceButton_backspace" then
@@ -1315,8 +1323,10 @@ do
 						textbox:SetCursor(math.min(textbox.cursorOffset + 1, 0))
 					elseif key == "home" then
 						textbox:SetCursor(-textbox.text:len())
-					elseif key == "end" then
-						textbox:SetCursor(0)
+					elseif key == "space" then
+						textbox:SetText(addStrWithOffset(textbox.text, textbox.cursorOffset, " "))
+					elseif key == "tab" then
+						textbox:SetText(addStrWithOffset(textbox.text, textbox.cursorOffset, "\t"))
 					end
 				end
 			end
