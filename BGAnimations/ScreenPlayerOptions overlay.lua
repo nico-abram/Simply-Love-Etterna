@@ -167,7 +167,7 @@ for player in ivalues(Players) do
 
 			if oldtype ~= newtype then
 				local bpm
-				local oldspeed = SL[pn].ActiveModifiers.SpeedMod
+				local oldspeed = SL[pn].ActiveModifiers.SpeedMod or 100
 
 				if GAMESTATE:IsCourseMode() then
 					bpm = GetCourseModeBPMs() or GetTrailBPMs(player)

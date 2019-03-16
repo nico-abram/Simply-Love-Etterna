@@ -24,6 +24,7 @@ local t =
 	LoadActor("./SortMenu/default.lua")
 }
 if SL.IsEtterna then
+	t.InitCommand = SaveProfileCustomEtterna
 	local searchActor
 	local searchWidth = 0.45
 	local searchHeight = 25
